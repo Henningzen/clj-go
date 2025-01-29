@@ -1,0 +1,63 @@
+#+title:  README
+#+author: Henning Jansen <henning.jansen@jansenh.no>
+#+date:   2025-01-28
+#+STARTUP: overview
+
+* clj-go
+  Clojure Go game for the fun of machine learning and super non-human intelligence!
+  #+BEGIN_QUOTE
+    You are here. Please enjoy your stay. Add your merge-request and help out?
+  #+END_QUOTE
+
+** Installation
+   Download from https://github.com/no.jansenh/clj-go
+
+**  Usage
+    #+BEGIN_SRC shell
+      # Run the project directly, via `:exec-fn`:
+      clojure -X:run-x
+
+      # Run the project, overriding the name to be greeted:
+      clojure -X:run-x :name '"Someone"'
+
+      # Run the project directly, via `:main-opts` (`-m no.jansenh.clj-go`):
+      clojure -M:run-m
+
+      # Run the project, overriding the name to be greeted:
+      clojure -M:run-m Via-Main
+    #+END_SRC
+
+** Testing
+   #+BEGIN_SRC shell
+     clojure -T:build test
+   #+END_SRC
+
+** CI pipeline
+   Build the project and build an uberjar. This will produce an updated
+   `pom.xml` file with synchronized dependencies inside the `META-INF`
+   directory inside `target/classes` and the uberjar in `target`. You can update
+   the version (and SCM tag) information in generated `pom.xml` by
+   updating `build.clj`.
+
+   If you don't want the `pom.xml` file in your project, you can remove it.
+   The `ci` task will still generate a minimal `pom.xml` as part of the
+   `uber` task, unless you remove `version` from `build.clj`.
+   #+BEGIN_SRC shell
+     clojure -T:build ci
+   #+END_SRC
+
+   Run that uberjar:
+   #+BEGIN_SRC shell
+     java -jar target/no.jansenh/clj-go-0.1.0-SNAPSHOT.jar
+   #+END_SRC
+
+** Options
+
+** Examples
+
+* License
+
+Copyright © 2025 Henning Jansen
+
+Distributed under the [[https://www.gnu.org/licenses/gpl-3.0-standalone.html][GNU General Public License v3.0]]
+

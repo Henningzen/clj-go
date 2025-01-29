@@ -1,0 +1,8 @@
+#+title:  README
+#+author: Henning Jansen <henning.jansen@jansenh.no>
+#+date:   2025-01-28
+#+STARTUP: overview
+
+* Introduction to no.jansenh/clj-go
+
+** TODO write [[https://jacobian.org/writing/what-to-write/][great documentation]].

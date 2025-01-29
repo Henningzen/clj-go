@@ -1,0 +1,31 @@
+#+title:  README
+#+author: Henning Jansen <henning.jansen@jansenh.no>
+#+date:   2025-01-28
+#+STARTUP: overview
+
+* Change Log
+  All notable changes to this project will be documented in this file. This
+  change log follows the conventions
+  of [[https://keepachangelog.com/][keepchangelog.com]]
+
+** [Unreleased]
+*** Changed
+    + Bit & pieces.
+
+** [0.1.1] - 2025-01-29
+*** Changed
+    + Documentation started.
+
+*** Removed
+    + none so far
+
+*** Fixed
+    + The initial failing test.
+
+** 0.1.0 - 2025-01-29
+*** Added
+   + Files from the deps-new template.
+   + Initial project documentations
+
+[Unreleased]: https://github.com/no.jansenh/clj-go/compare/0.1.1...HEAD
+[0.1.1]: https://github.com/no.jansenh/clj-go/compare/0.1.0...0.1.1
