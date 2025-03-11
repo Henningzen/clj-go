@@ -6,7 +6,11 @@
   [data]
   (println (str "Hello, " (or (:name data) "World") "!")))
 
-(defn -main
-  "I don't do a whole lot ... yet."
-  [& args]
-  (greet {:name (first args)}))
+(defn -main [& args]
+  ;; Either call directly instead of using invoke-later
+  (no.jansenh.clj-go.board/create-frame))
+
+(comment
+  (-main)
+  ;;---> comment
+  )

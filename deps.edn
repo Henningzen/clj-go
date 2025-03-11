@@ -1,5 +1,6 @@
 {:paths ["src" "resources"]
- :deps {org.clojure/clojure {:mvn/version "1.12.0"}}
+ :deps {org.clojure/clojure {:mvn/version "1.12.0"}
+        seesaw/seesaw {:mvn/version "1.5.0"}}
  :aliases
  {:run-m {:main-opts ["-m" "no.jansenh.clj-go"]}
   :run-x {:ns-default no.jansenh.clj-go
