@@ -4,8 +4,8 @@
  :aliases
  {:run-m {:main-opts ["-m" "no.jansenh.clj-go"]}
   :run-x {:ns-default no.jansenh.clj-go
-          :exec-fn greet
-          :exec-args {:name "Clojure"}}
+          :exec-fn -main
+          :exec-args {}}
   :build {:deps {io.github.clojure/tools.build
                  {:mvn/version "0.10.5"}}
           :ns-default build}

@@ -4,10 +4,17 @@
 #+STARTUP: overview
 
 * clj-go
-  Clojure Go game for the fun of machine learning and super non-human intelligence!
+  Go game written in Clojure for the fun of machine learning and
+  super non-human intelligence!
+
   #+BEGIN_QUOTE
     You are here. Please enjoy your stay. Add your merge-request and help out?
   #+END_QUOTE
+
+  #+CAPTION: Clj-go in Emacs REPL session
+  #+NAME:   clj-go intro
+  [[./img/clj-go-intro.png]]
+  ./img/clj-go-intro.png
 
 ** Installation
    Download from https://github.com/no.jansenh/clj-go
@@ -16,15 +23,28 @@
     #+BEGIN_SRC shell
       # Run the project directly, via `:exec-fn`:
       clojure -X:run-x
+    #+END_SRC
 
-      # Run the project, overriding the name to be greeted:
-      clojure -X:run-x :name '"Someone"'
+    The game has no meaning and makes no sense at this time. All we can do is place
+    stones on the board, alternating white or black player. Or make a pass on
+    a turn. Or resign the game.
 
-      # Run the project directly, via `:main-opts` (`-m no.jansenh.clj-go`):
-      clojure -M:run-m
+    The game-board holds a state and graphical implementation of the game. Logic
+    , rules and reasoning to drive the game will follow.
 
-      # Run the project, overriding the name to be greeted:
-      clojure -M:run-m Via-Main
+    If you choose to use the project in a REPL, you can interact with the game
+    as player white through an API.
+    #+BEGIN_SRC clojure
+      ;;  navigate to the board namespace
+      (ns no.jansenh.clj-go.board)
+      ;; start the game
+      (-main)
+      ;; and interact with the game as player :white
+      (make-white-move [1 2])
+      (white-pass)
+      (white-resign)
+      ;; You can observe the game-state in the REPL:
+      (deref game-state)
     #+END_SRC
 
 ** Testing
@@ -51,13 +71,10 @@
      java -jar target/no.jansenh/clj-go-0.1.0-SNAPSHOT.jar
    #+END_SRC
 
-** Options
-
-** Examples
+* Changelog
+  We keep a [[file:CHANGELOG.org][changelog]]!
 
 * License
-
 Copyright © 2025 Henning Jansen
-
 Distributed under the [[https://www.gnu.org/licenses/gpl-3.0-standalone.html][GNU General Public License v3.0]]
 

@@ -1,16 +1,17 @@
 (ns no.jansenh.clj-go
+  (:require [no.jansenh.clj-go.board :refer [create-frame]])
   (:gen-class))
 
-(defn greet
-  "Callable entry point to the application."
-  [data]
-  (println (str "Hello, " (or (:name data) "World") "!")))
-
+;;;;
+;;;;  Clj-go
+;;;;  ------
+;;;;
+;;;;  Clojure Go Game.
+;;;;
+;;;;  Henning Jansen 2025  Copyright © henning.jansen@jansenh.no
+;;;;
+;;;;  Distributed under the GNU General Public License v3.0 as described in the
+;;;;  root of this project.
+;;;;
 (defn -main [& args]
-  ;; Either call directly instead of using invoke-later
-  (no.jansenh.clj-go.board/create-frame))
-
-(comment
-  (-main)
-  ;;---> comment
-  )
+  (create-frame))
