@@ -14,7 +14,6 @@
   #+CAPTION: Clj-go in Emacs REPL session
   #+NAME:   clj-go intro
   [[./img/clj-go-intro.png]]
-  ./img/clj-go-intro.png
 
 ** Installation
    Download from https://github.com/no.jansenh/clj-go
