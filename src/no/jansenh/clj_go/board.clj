@@ -6,30 +6,33 @@
 ;;;;  Clj-go board
 ;;;;  ------------
 ;;;;
-;;;;  Clojure Go Game board implementation, using Seesaw clojure wrapper
-;;;;  for Java Swing AWT graphics.
+;;;;    Clojure Go Game board implementation, using Seesaw clojure wrapper
+;;;;    for Java Swing AWT graphics.
 ;;;;
-;;;;  Henning Jansen 2025  Copyright © henning.jansen@jansenh.no
-;;;;  Distributed under the GNU General Public License v3.0 as described in the
-;;;;  root of this project.
+;;;;    Henning Jansen 2025  Copyright © henning.jansen@jansenh.no
+;;;;    Distributed under the GNU General Public License v3.0 as described in
+;;;;    the root of this project.
 ;;;;
-;;;;  The Board has a basic state with:
-;;;;    - black and white stones on a grid,
-;;;;    - current player :black or :white
-;;;;    - and events capturing mouse interaction from placing stones on the
-;;;;      board and clicking buttons.
+;;;;    The Board has a basic state with:
+;;;;      - black and white stones on a grid,
+;;;;      - current player :black or :white,
+;;;;      - events capturing mouse interaction from placing stones on the
+;;;;        board and clicking the game buttons.
 ;;;;
-;;;;  We got button for:
-;;;;    1. pass turn
-;;;;    2. resign
-;;;;    3. close
+;;;;    We got buttons for:
+;;;;      1. pass turn
+;;;;      2. resign
+;;;;      3. close
 ;;;;
-;;;; The board has an API for interacting with the game programatically
-;;;; currently supporting player :white. The API support
-;;;;   - :white add stone to the board, return true/false.
-;;;;   - :white pass move.
+;;;;    The board has an API for interacting with the game programatically,
+;;;;    currently supporting player :white.
 ;;;;
-;;;;     Enjoy!
+;;;;    The API support
+;;;;      - :white add stone to the board, return true/false.
+;;;;      - :white pass move.
+;;;;
+;;;;   Enjoy!
+
 
 ;;;  Definitions
 ;;;
@@ -44,6 +47,7 @@
 ;;;
 ;;;     This is where evil reside.
 ;;;
+
 (def game-state (atom {:board (vec (repeat (inc board-size)
                                            (vec (repeat (inc board-size) nil))))
                        :current-player :black}))
@@ -107,7 +111,6 @@
     (println (str "Black stones: " (:black stone-counts)))
     (println (str "White stones: " (:white stone-counts)))
     stone-counts))
-
 
 (defn repaint!
   "Find and force repaint on all Go game frames."
@@ -246,26 +249,27 @@
             :listen [:action (fn [_]
                                (handle-resign))]))
 
-(defn create-frame []
+(defn create-frame
+  "Main entry point for clj-go Board."
+  [& arg]
   (let [panel (create-panel)
         close-button (create-close-button)
         pass-button (create-pass-button)
         resign-button (create-resign-button)
-        ;; Create left panel for game control buttons
+
         left-buttons (s/horizontal-panel
                       :items [pass-button resign-button])
-        ;; Create a panel with BorderLayout to position close button on right
+
         button-panel (s/border-panel
                       :west left-buttons
                       :east close-button)
+
         content-panel (s/border-panel
                        :center panel
                        :south button-panel)
+
         frame (s/frame :title "Game of Go"
                        :content content-panel
                        :on-close :dispose)]
+
     (-> frame s/pack! s/show!)))
-
-
-(defn -main [& args]
-  (create-frame))
