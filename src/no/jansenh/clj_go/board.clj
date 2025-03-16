@@ -45,10 +45,13 @@
 
 ;;;  Reign in blood!
 ;;;
-;;;     This is where evil reside.
+;;;     --- This is where evil reside. ----
 ;;;
+;;;  The board is initialized with a two-dimensional vector of nils,
+;;;  ready to hold state of each Gp board grid intersection with a single
+;;;  player stone :black or :white.
 
-(def game-state (atom {:board (vec (repeat (inc board-size)
+(def board-state (atom {:board (vec (repeat (inc board-size)
                                            (vec (repeat (inc board-size) nil))))
                        :current-player :black}))
 
@@ -76,8 +79,8 @@
   [i j player]
   (when (and (<= 0 i board-size)
              (<= 0 j board-size)
-             (nil? (get-in @game-state [:board j i])))
-    (swap! game-state
+             (nil? (get-in @board-state [:board j i])))
+    (swap! board-state
            (fn [state]
              (-> state
                  (assoc-in [:board j i] player)
@@ -86,14 +89,14 @@
 (defn pass-turn
   "Pass the current player's turn"
   []
-  (swap! game-state update :current-player
+  (swap! board-state update :current-player
          (fn [current-player]
            (if (= current-player :black) :white :black))))
 
 (defn count-stones
   "Count the number of black and white stones on the board"
   []
-  (let [board (:board @game-state)
+  (let [board (:board @board-state)
         stones (for [i (range (inc board-size))
                      j (range (inc board-size))
                      :let [stone (get-in board [j i])]
@@ -127,7 +130,7 @@
 ;;;     ML Player - automata using machine learning.
 ;;;
 ;;;        The game is being set up with player white being non-human, interacting
-;;;        with game-state via an api.
+;;;        with board-state via an api.
 ;;;
 
 (defn make-white-move
@@ -135,12 +138,12 @@
    Function has side-effect with a repaint! on the JavaFX external libraries.
    Takes board coordinates [i j] and returns true if successful, false otherwise."
   [[i j]]
-  (if (and (= (:current-player @game-state) :white)
+  (if (and (= (:current-player @board-state) :white)
            (<= 0 i board-size)
            (<= 0 j board-size)
-           (nil? (get-in @game-state [:board j i])))
+           (nil? (get-in @board-state [:board j i])))
     (do
-      (swap! game-state
+      (swap! board-state
              (fn [state]
                (-> state
                    (assoc-in [:board j i] :white)
@@ -153,9 +156,9 @@
   "External function for white player to pass their turn.
    Returns true if it was white's turn and the pass was successful."
   []
-  (if (= (:current-player @game-state) :white)
+  (if (= (:current-player @board-state) :white)
     (do
-      (swap! game-state assoc :current-player :black)
+      (swap! board-state assoc :current-player :black)
        true)
     false))
 
@@ -164,7 +167,7 @@
    Returns the stone counts if it was white's turn and the resignation was
    successful, nil otherwise."
   []
-  (if (= (:current-player @game-state) :white)
+  (if (= (:current-player @board-state) :white)
     (do
       (handle-resign))
     nil))
@@ -174,7 +177,7 @@
 ;;;   The UI and it's interactions.
 ;;;
 
-;; Draw the board from definitions, with stone from game-state.
+;; Draw the board from definitions, with stone from board-state.
 (defn draw-board [c g]
   (let [bg-color (color/color 220 179 92)]
     ;; Draw background
@@ -197,7 +200,7 @@
     ;; Draw stones
     (doseq [i (range (inc board-size))
             j (range (inc board-size))]
-      (let [stone (get-in @game-state [:board j i])]
+      (let [stone (get-in @board-state [:board j i])]
         (when stone
           (let [[x y] (get-intersection-position i j)
                 stone-color (if (= stone :black) java.awt.Color/BLACK java.awt.Color/WHITE)]
@@ -220,7 +223,7 @@
                 (let [x (.getX e)
                       y (.getY e)]
                   (when-let [[i j] (get-board-position x y)]
-                    (place-stone i j (:current-player @game-state))
+                    (place-stone i j (:current-player @board-state))
                     (s/repaint! panel)))))
     panel))
 
