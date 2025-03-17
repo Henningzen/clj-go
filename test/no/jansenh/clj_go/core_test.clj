@@ -39,9 +39,9 @@
     (is (= [[10 9] [11 10] [10 11] [9 10]] (sut/neighbours-position 10 10 numeric-board)))
     (is (= [[2 9] [3 10] [2 11] [1 10]] (sut/neighbours-position 2 10 numeric-board)))))
 
-(def test-neighbours-value
+(deftest test-neighbours-value
   (testing "We expect to find the neighbours values on the numeric board."
-    (is (= [nil 30 42 nil] (sut/neighbours-value 0 0 numeric-board)))
+    (is (= [nil 2 14 nil] (sut/neighbours-value 0 0 numeric-board)))
     (is (= [nil nil 26 12] (sut/neighbours-value 12 0 numeric-board)))
     (is (= [156 nil nil 168] (sut/neighbours-value 12 12 numeric-board)))
     (is (= [144 158 nil nil] (sut/neighbours-value 0 12 numeric-board)))))
