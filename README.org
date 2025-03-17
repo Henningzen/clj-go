@@ -4,16 +4,23 @@
 #+STARTUP: overview
 
 * clj-go
+
   Go game written in Clojure for the fun of machine learning and
   super non-human intelligence!
 
+
   #+BEGIN_QUOTE
+
     You are here. Please enjoy your stay. Add your merge-request and help out?
+
   #+END_QUOTE
+
 
   #+CAPTION: Clj-go in Emacs REPL session
   #+NAME:   clj-go intro
   [[./img/clj-go-intro.png]]
+
+
 
 ** Installation
    Download from https://github.com/no.jansenh/clj-go
