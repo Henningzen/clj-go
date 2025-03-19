@@ -1,9 +1,4 @@
-(ns no.jansenh.clj-go.core
-  (:require [no.jansenh.clj-go.board :refer [board-state]]))
-
-(def game-state (deref board-state))
-
-(def board (:board game-state))
+(ns no.jansenh.clj-go.core)
 
 (defn position
   "Gets state of a given position on board.
