@@ -10,8 +10,8 @@
 ;;;;    for Java Swing AWT graphics.
 ;;;;
 ;;;;    Henning Jansen 2025  Copyright © henning.jansen@jansenh.no
-;;;;    Distributed under the GNU General Public License v3.0 as described in
-;;;;    the root of this project.
+;;;;    Distributed under the GNU General Public License v3.0 as
+;;;;    described in the root of this project.
 ;;;;
 ;;;;    The Board has a basic state with:
 ;;;;      - black and white stones on a grid,
@@ -31,9 +31,10 @@
 ;;;;      - :white add stone to the board, return true/false.
 ;;;;      - :white pass move.
 ;;;;
-;;;;   Enjoy!
+;;;;
+;;;;
 
-
+;;;; ---------------------------------------------------------------------------
 ;;;  Definitions
 ;;;
 (def board-size 12)          ; cells define grid intersections (+ 1 board-size)
@@ -42,19 +43,19 @@
 (def board-margin 40)
 (def total-size (+ (* board-size cell-size) (* 2 board-margin)))
 
-
 ;;;  Reign in blood!
 ;;;
 ;;;     --- This is where evil reside. ----
 ;;;
-;;;  The board is initialized with a two-dimensional vector of nils,
-;;;  ready to hold state of each Gp board grid intersection with a single
-;;;  player stone :black or :white.
+;;;  State management.
+;;;
+;;;    The board is initialized with a two-dimensional vector of nils,
+;;;    ready to hold state of each Gp board grid intersection with a single
+;;;    player stone :black or :white.
 
 (def board-state (atom {:board (vec (repeat (inc board-size)
                                            (vec (repeat (inc board-size) nil))))
                        :current-player :black}))
-
 
 ;;; ----------------------------------------------------------------------------
 ;;;    Utility functions

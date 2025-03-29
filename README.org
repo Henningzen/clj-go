@@ -10,7 +10,7 @@
 
 
   ‼️⚠️🚧 Under Construction 🚧️
-  
+
 
   #+BEGIN_QUOTE
 
@@ -86,4 +86,3 @@
 * License
 Copyright © 2025 Henning Jansen
 Distributed under the [[https://www.gnu.org/licenses/gpl-3.0-standalone.html][GNU General Public License v3.0]]
-
