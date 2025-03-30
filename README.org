@@ -28,37 +28,39 @@
 ** Installation
    Download from https://github.com/no.jansenh/clj-go
 
-**  Usage
-    #+BEGIN_SRC shell
-      # Run the project directly, via `:exec-fn`:
-      clojure -X:run-x
-    #+END_SRC
 
-    The game has no meaning and makes no sense at this time. All we can do is place
-    stones on the board, alternating white or black player. Or make a pass on
-    a turn. Or resign the game.
+** Usage
+   #+BEGIN_SRC shell
+     # Run the project directly, via `:exec-fn`:
+     clojure -X:run-x
+   #+END_SRC
 
-    The game-board holds a state and graphical implementation of the game. Logic
-    , rules and reasoning to drive the game will follow.
+   The game has no meaning and makes no sense at this time. All we can do is place
+   stones on the board, alternating white or black player. Or make a pass on
+   a turn. Or resign the game.
 
-    If you choose to use the project in a REPL, you can interact with the game
-    as player white through an API.
-    #+BEGIN_SRC clojure
-      ;;  navigate to the board namespace
-      (ns no.jansenh.clj-go.board)
-      ;; start the game
-      (-main)
-      ;; and interact with the game as player :white
-      (make-white-move [1 2])
-      (white-pass)
-      (white-resign)
-      ;; You can observe the game-state in the REPL:
-      (deref game-state)
-    #+END_SRC
+   The game-board holds a state and graphical implementation of the game. Logic
+   , rules and reasoning to drive the game will follow.
+
+   If you choose to use the project in a REPL, you can interact with the game
+   as player white through an API.
+   #+BEGIN_SRC clojure
+     ;;  navigate to the board namespace
+     (ns no.jansenh.clj-go.board)
+     ;; start the game
+     (-main)
+     ;; and interact with the game as player :white
+     (make-white-move [1 2])
+     (white-pass)
+     (white-resign)
+     ;; You can observe the game-state in the REPL:
+     (deref game-state)
+   #+END_SRC
 
 ** Testing
    #+BEGIN_SRC shell
      clojure -T:build test
+     clojure -X:test
    #+END_SRC
 
 ** CI pipeline
@@ -80,8 +82,10 @@
      java -jar target/no.jansenh/clj-go-0.1.0-SNAPSHOT.jar
    #+END_SRC
 
+
 * Changelog
   We keep a [[file:CHANGELOG.org][changelog]]!
+
 
 * License
 Copyright © 2025 Henning Jansen

@@ -10,6 +10,33 @@
 ;;;;  described in the root of this project.
 ;;;;
 
+(defn move
+  "Takes a vector of positional arguments and return map with structured argument.
+   Multiple telescopic arity, positions are x, y, player and board."
+  ([x-pos y-pos]
+   (let [x-pos  x-pos
+         y-pos  y-pos]
+     {:x-pos    x-pos
+      :y-pos    y-pos}))
+
+  ([x-pos y-pos board]
+   (let [x-pos  x-pos
+         y-pos  y-pos
+         board  board]
+     {:x-pos    x-pos
+      :y-pos    y-pos
+      :board    board}))
+
+  ([x-pos y-pos player board]
+   (let [x-pos  x-pos
+         y-pos  y-pos
+         player player
+         board  board]
+     {:x-pos    x-pos
+      :y-pos    y-pos
+      :player   player
+      :board    board})))
+
 (defn position
   "Gets state of a given position on board.
    - position x is horisontal,
@@ -37,31 +64,4 @@
         b (:board m)]
     (let [neighbours (neighbours-position (move x y b))]
      (into [] (map #(position {:x-pos (first %) :y-pos (second %) :board b}) neighbours)))))
-
-(defn move
-  "Takes a vector of positional arguments and return map with structured argument.
-   Multiple telescopic arity, positions are x, y, player and board."
-  ([x-pos y-pos]
-   (let [x-pos  x-pos
-         y-pos  y-pos]
-     {:x-pos    x-pos
-      :y-pos    y-pos}))
-
-  ([x-pos y-pos board]
-   (let [x-pos  x-pos
-         y-pos  y-pos
-         board  board]
-     {:x-pos    x-pos
-      :y-pos    y-pos
-      :board    board}))
-
-  ([x-pos y-pos player board]
-   (let [x-pos  x-pos
-         y-pos  y-pos
-         player player
-         board  board]
-     {:x-pos    x-pos
-      :y-pos    y-pos
-      :player   player
-      :board    board})))
 
