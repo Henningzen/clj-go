@@ -51,7 +51,7 @@
     (is (= [[2 9] [3 10] [2 11] [1 10]] (sut/neighbours-position (sut/move 2 10 numeric-board))))))
 
 (deftest test-neighbours-value
-  (testing "We expect to find the neighbours values on the numeric board."
+  (testing "We expect to find the neighbours values on the numeric board." 
     (is (= [nil 2 14 nil] (sut/neighbours-value (sut/move 0 0 numeric-board))))
     (is (= [nil nil 26 12] (sut/neighbours-value (sut/move 12 0 numeric-board))))
     (is (= [156 nil nil 168] (sut/neighbours-value (sut/move 12 12 numeric-board))))
