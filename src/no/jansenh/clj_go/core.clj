@@ -12,7 +12,7 @@
 
 (defn move
   "Takes a vector of positional arguments and return map with structured argument.
-   Multiple telescopic arity, positions are x-pos, y-pos, player and board."
+`   Multiple telescopic arity, positions are x-pos, y-pos, player and board."
   ([x-pos y-pos]
    {:x-pos    x-pos
     :y-pos    y-pos})
