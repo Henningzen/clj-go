@@ -52,7 +52,29 @@
   (let [neighbours (neighbours-position {:x-pos x-pos :y-pos y-pos :board board})]
     (into [] (map #(position {:x-pos (first %) :y-pos (second %) :board board}) neighbours))))
 
+(ns your-ns
+  (:require [clojure.set :as set])) ; You might not need this require if only using core 'set'
 
+(defn go-string
+  "The initial shape of a go-string.
+   Handles default values for missing keys in the input map.
+   :stones will be a set of [x y] coordinate vectors.
+   :liberties will be an integer.
+   Returns an empty map if :player is not :black or :white."
+  ([]
+   {:player nil
+    :stones #{} ;
+    :liberties 0})
+  ([m]
+   (let [player    (:player m)
+         stones    (set (:stones m #{}))  ;; Defaults to empty set if none.
+         liberties (:liberties m 0)]      ;; Defaults to zero (0) in none. 
+     (if (#{:black :white} player)
+       {:player player
+        :stones stones
+        :liberties liberties}
+       {})
+     )))
 
 (defn update-go-string
   "Update or merge a go-string. Merges stones if players match and are valid.
@@ -109,7 +131,26 @@
       :else
       m)))
 
-(comment
+
+
+(comment ;; Go string
+
+  ;; Input with :stones as a set of vectors
+  (go-string {:player :black :stones #{[1 1] [1 2]} :liberties 4})
+
+  ;; Input with :stones as a vector of vectors
+  (go-string {:player :white :stones [[2 2] [3 3]] :liberties 3})
+
+  ;; Input with :stones missing
+  (go-string {:player :black :liberties 8})
+
+  ;; Input with :liberties missing
+  (go-string {:player :white :stones #{[0 0]}})
+)
+
+
+
+(comment ;; update Go string
 
   (def first-string {:player :black :stones #{[1 1]} :liberties 4})
   (def second-string {:player :white :stones #{[5 5]} :liberties 2})
