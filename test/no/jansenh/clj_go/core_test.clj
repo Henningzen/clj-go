@@ -1,7 +1,8 @@
 (ns no.jansenh.clj-go.core-test
   (:require [clojure.test :refer [deftest is testing]]
             [no.jansenh.clj-go.core :as sut]
-            [no.jansenh.clj-go.utilities :as utils]))
+            [no.jansenh.clj-go.utilities :as utils]
+            [no.jansenh.clj-go.terminal-board :as tb]))
 
 (deftest test-pos
   (testing "We expect to find the corresponding [x y] value on the numeric board."
@@ -26,7 +27,7 @@
     (is (= [[2 9] [3 10] [2 11] [1 10]] (sut/neighbours-position (sut/move 2 10 utils/numeric-board))))))
 
 (deftest test-neighbours-value
-  (testing "We expect to find the neighbours values on the numeric board." 
+  (testing "We expect to find the neighbours values on the numeric board."
     (is (= [nil 2 14 nil] (sut/neighbours-value (sut/move 0 0 utils/numeric-board))))
     (is (= [nil nil 26 12] (sut/neighbours-value (sut/move 12 0 utils/numeric-board))))
     (is (= [156 nil nil 168] (sut/neighbours-value (sut/move 12 12 utils/numeric-board))))
@@ -38,3 +39,17 @@
     (is (= :white (:player (sut/move 3 4 :white utils/numeric-board))))
     (is (=  3 (:x-pos (sut/move 3 4 utils/numeric-board))))
     (is (=  4 (:y-pos (sut/move 3 4 utils/numeric-board))))))
+
+
+(comment
+
+
+  (sut/move 3 4 utils/numeric-board)
+  (def initial-white-string (sut/go-string {:player :white :stones #{[1 1] [1 2]} :liberties #{[2 2] [2 3]}}))
+  (def initial-black-string (sut/go-string {:player :black :stones #{[1 1] [1 2]} :liberties #{[2 2] [2 3]}}))
+
+  (-> tb/symbolic-board initial-white-string)
+  (tb/symbolic-board initial-white-string)
+
+  ;;--->
+  )

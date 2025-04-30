@@ -1,15 +1,24 @@
-(ns no.jansenh.clj-go.core
-  (:require [clojure.set :as set]))
+;; -----------------------------------------------------------------------------
+;; File: src/no/jansenh/clj_go/core.clj
+;; Author: Henning Jansen - henning.jansen@jansenh.no
+;; Copyright: (c) 2025
+;; License: Distributed under the GNU General Public License v3.0
+;; as described in the root of this project.
+;; -----------------------------------------------------------------------------
 
-;;;;
-;;;;  clj-go.core
-;;;;  -----------
-;;;;  Core namespace.
-;;;;
-;;;;  Henning Jansen 2025  Copyright © henning.jansen@jansenh.no
-;;;;  Distributed under the GNU General Public License v3.0 as
-;;;;  described in the root of this project.
-;;;;
+(ns no.jansenh.clj-go.core
+  (:require [clojure.set :as set]
+            [no.jansenh.clj-go.terminal-board :as tb]))
+
+;; -----------------------------------------------------------------------------
+;; clj-go.core
+;; -----------
+;; Core namespace.
+;;
+;; authors:   Henning Jansen            henning.jansen@jansenh.no
+;; since:     0.1.0-SNAPSHOT            2025-01-29
+;; version:   0.1.1-SNAPSHOT            2025-04-04
+;; -----------------------------------------------------------------------------
 
 (defn move
   "Takes a vector of positional arguments and return map with structured argument.
@@ -28,6 +37,18 @@
     :y-pos    y-pos
     :player   player
     :board    board}))
+
+(def empty-board
+  "Default empty board, 13 by 13 in x-pos, y-pos vectors. Values are nil."
+  (vec (for [row (range 13)]
+         (vec (for [col (range 13)]
+                nil)))))
+
+(defn update-board
+  "Updates the board at the specified x and y position with the given value.
+   Returns a new board with the updated position."
+  [board x y value]
+  (assoc-in board [y x] value))
 
 (defn position
   "Gets state of a given position on board.
@@ -52,8 +73,11 @@
   (let [neighbours (neighbours-position {:x-pos x-pos :y-pos y-pos :board board})]
     (into [] (map #(position {:x-pos (first %) :y-pos (second %) :board board}) neighbours))))
 
-(ns your-ns
-  (:require [clojure.set :as set])) ; You might not need this require if only using core 'set'
+(defn stone
+  [player x-pos y-pos]
+  {:player player
+   :x-pos x-pos
+   :y-pos y-pos})
 
 (defn go-string
   "The initial shape of a go-string.
@@ -64,11 +88,11 @@
   ([]
    {:player nil
     :stones #{} ;
-    :liberties 0})
+    :liberties #{}})
   ([m]
    (let [player    (:player m)
          stones    (set (:stones m #{}))  ;; Defaults to empty set if none.
-         liberties (:liberties m 0)]      ;; Defaults to zero (0) in none. 
+         liberties (:liberties m #{})]    ;; Defaults to empty set if none.
      (if (#{:black :white} player)
        {:player player
         :stones stones
@@ -92,9 +116,9 @@
 
   [m & rst]
   (let [player         (:player m)
-        stones         (set (:stones m #{}))  ; Ensure set, defaults to empty set
-        liberties      (:liberties m 0)       ; Defaults to zero (00
-        conj-string    (first rst) ; Get the first map from the rest args
+        stones         (set (:stones m #{}))    ; Ensure set, defaults to empty set.
+        liberties      (:liberties m #{})       ; Defaults to empty set.
+        conj-string    (first rst)              ; Get the first map from the rest args.
         conj-player    (when conj-string (:player conj-string))
         conj-stones    (when conj-string (set (:stones conj-string #{})))
         conj-liberties (when conj-string (:liberties conj-string liberties))] ; Default to m's liberties
@@ -125,64 +149,23 @@
       (= player conj-player)
       {:player player
        :stones (set/union stones conj-stones)
-       :liberties conj-liberties}
+       :liberties (set/union liberties conj-liberties)}
 
       ;; 5. Else: Players are valid but different. Don't merge.
       :else
       m)))
 
 
+(defn remove-liberty
+  "Function will take and return 'board -> board’ with one liberty removed.
+   The liberty has format [x-pos y-pos]."
+  ([board lib]
+   (update board :liberties disj lib)))
 
-(comment ;; Go string
-
-  ;; Input with :stones as a set of vectors
-  (go-string {:player :black :stones #{[1 1] [1 2]} :liberties 4})
-
-  ;; Input with :stones as a vector of vectors
-  (go-string {:player :white :stones [[2 2] [3 3]] :liberties 3})
-
-  ;; Input with :stones missing
-  (go-string {:player :black :liberties 8})
-
-  ;; Input with :liberties missing
-  (go-string {:player :white :stones #{[0 0]}})
-)
-
-
-
-(comment ;; update Go string
-
-  (def first-string {:player :black :stones #{[1 1]} :liberties 4})
-  (def second-string {:player :white :stones #{[5 5]} :liberties 2})
-
-  ;; Valid merge - OK
-  (update-go-string first-string {:player :black :stones #{[1 2]} :liberties 3})
-
-  ;; Players don't match - OK (returns original)
-  (update-go-string first-string {:player :white :stones #{[2 2]} :liberties 1})
-
-  ;; Initial player invalid - Throws ex-info
-  (try
-    (update-go-string {:player :red} {:player :black :stones #{[1 1]}})
-    (catch clojure.lang.ExceptionInfo e
-      (println "Caught Exception:")
-      (println "  Message:" (.getMessage e))
-      (println "  Data:" (ex-data e))))
-
-  ;; Incoming player invalid - Throws ex-info
-  (try
-    (update-go-string second-string {:player :non-valid
-                                     :stones #{[0 0] [0 1]}
-                                     :liberties 2})
-    (catch clojure.lang.ExceptionInfo e
-      (println "\nCaught Exception:")
-      (println "  Message:" (.getMessage e))
-      (println "  Data:" (ex-data e))))
-
-  ;; Nothing to merge - OK (returns original)
-  (update-go-string first-string)
-
-  ;; --->
-)
-
-nil
+(defn add-liberty
+  "Function will take and return 'board -> board’ with one liberty added.
+   The liberty has format [x-pos y-pos]."
+  ([board lib]
+   (update board :liberties conj lib))
+  #_([board & libs]                      ;; TODO Adapt to collection of lib's
+     (update board :liberties into libs)))
