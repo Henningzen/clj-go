@@ -22,7 +22,7 @@
 
 (defn move
   "Takes a vector of positional arguments and return map with structured argument.
-`   Multiple telescopic arity, positions are x-pos, y-pos, player and board."
+   Multiple telescopic arity, positions are x-pos, y-pos, player and board."
   ([x-pos y-pos]
    {:x-pos    x-pos
     :y-pos    y-pos})
@@ -91,8 +91,8 @@
     :liberties #{}})
   ([m]
    (let [player    (:player m)
-         stones    (set (:stones m #{}))  ;; Defaults to empty set if none.
-         liberties (:liberties m #{})]    ;; Defaults to empty set if none.
+         stones    (set (:stones m #{}))     ;; Defaults to empty set if none.
+         liberties (set (:liberties m #{}))] ;; Defaults to empty set if none.
      (if (#{:black :white} player)
        {:player player
         :stones stones
@@ -117,7 +117,7 @@
   [m & rst]
   (let [player         (:player m)
         stones         (set (:stones m #{}))    ; Ensure set, defaults to empty set.
-        liberties      (:liberties m #{})       ; Defaults to empty set.
+        liberties      (set (:liberties m #{}))       ; Defaults to empty set.
         conj-string    (first rst)              ; Get the first map from the rest args.
         conj-player    (when conj-string (:player conj-string))
         conj-stones    (when conj-string (set (:stones conj-string #{})))

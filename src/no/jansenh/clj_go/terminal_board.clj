@@ -1,6 +1,26 @@
+;; -----------------------------------------------------------------------------
+;; File: src/no/jansenh/clj_go/terminal_board.clj
+;; Author: Henning Jansen - henning.jansen@jansenh.no
+;; Copyright: (c) 2025
+;; License: Distributed under the GNU General Public License v3.0
+;; as described in the root of this project.
+;; -----------------------------------------------------------------------------
+
 (ns no.jansenh.clj-go.terminal-board)
 
-(defn value-to-symbol
+;; -----------------------------------------------------------------------------
+;; terminal-board
+;; --------------
+;;
+;; String based symbolic representation of a Go board state for REPL and
+;; println use.
+;;
+;; authors:   Henning Jansen            henning.jansen@jansenh.no
+;; since:     0.1.1-SNAPSHOT            2025-04-17
+;; version:   0.1.1-SNAPSHOT
+;; -----------------------------------------------------------------------------
+
+(defn- value-to-symbol
   "Convert a board value to its symbolic representation."
   [value]
   (case value
@@ -8,7 +28,7 @@
     :black "● "
     nil "  "))
 
-(defn convert-to-symbols
+(defn- convert-to-symbols
   "Convert each value in the board to its symbolic representation."
   [board]
   (map (fn [row]
@@ -21,5 +41,3 @@
    as text file."
   [board]
   (apply str (interpose "\n" (convert-to-symbols board))))
-
-
