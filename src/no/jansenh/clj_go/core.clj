@@ -17,26 +17,9 @@
 ;;
 ;; authors:   Henning Jansen            henning.jansen@jansenh.no
 ;; since:     0.1.0-SNAPSHOT            2025-01-29
-;; version:   0.1.1-SNAPSHOT            2025-04-04
+;; version:   0.1.1-SNAPSHOT            2025-06-04
 ;; -----------------------------------------------------------------------------
 
-(defn move
-  "Takes a vector of positional arguments and return map with structured argument.
-   Multiple telescopic arity, positions are x-pos, y-pos, player and board."
-  ([x-pos y-pos]
-   {:x-pos    x-pos
-    :y-pos    y-pos})
-
-  ([x-pos y-pos board]
-   {:x-pos    x-pos
-    :y-pos    y-pos
-    :board    board})
-
-  ([x-pos y-pos player board]
-   {:x-pos    x-pos
-    :y-pos    y-pos
-    :player   player
-    :board    board}))
 
 (def empty-board
   "Default empty board, 13 by 13 in x-pos, y-pos vectors. Values are nil."
@@ -44,20 +27,43 @@
          (vec (for [col (range 13)]
                 nil)))))
 
-(defn update-board
-  "Updates the board at the specified x and y position with the given value.
-   Returns a new board with the updated position."
-  [board x y value]
-  (assoc-in board [y x] value))
+(defn stone
+  "A stone has a position and a value, the color."
+  [x-pos y-pos player]
+  {:player player
+   :x-pos x-pos
+   :y-pos y-pos})
 
-(defn position
+
+(defn position->
+  "Helper function for transforming position vector or map.
+   1. Create a vector [x y} from a map with :x-pos and :y-pos.
+   2. Creates a x-pos, y-pos map from [x y] values."
+  ([m]
+   [(:x-pos m) {:y-pos m}])
+  ([x y]
+   {:x-pos x
+    :y-pos y}))
+
+
+(defn update-position-at-board
+  "Updates the board at the specified x and y position with the given value.
+   The value is a player :black or :white or nil.
+
+   Returns a new board with the updated position."
+  [{:keys [x-pos y-pos player]} board]
+  (assoc-in board [y-pos x-pos] player))
+
+
+(defn value-at-position
   "Gets state of a given position on board.
    - position x is horisontal,
    - position y is vertical."
-  [{:keys [x-pos y-pos board]}]
+  [{:keys [x-pos y-pos]} board]
   (get-in board [y-pos x-pos]))
 
-(defn neighbours-position
+
+(defn neighbours-at-position
   "Gets the positions of the neighbors on a given position, arranged
    as follows: north, east, south, and west."
   [{:keys [x-pos y-pos]}]
@@ -66,41 +72,19 @@
    [x-pos (+ y-pos 1)]
    [(- x-pos 1) y-pos]])
 
+
 (defn neighbours-value
   "Gets the values of the neighbors on a given position, arranged
    as follows: north, east, south, and west."
-  [{:keys [x-pos y-pos board]}]
-  (let [neighbours (neighbours-position {:x-pos x-pos :y-pos y-pos :board board})]
-    (into [] (map #(position {:x-pos (first %) :y-pos (second %) :board board}) neighbours))))
+  [{:keys [x-pos y-pos]} board]
+  (let [neighbours (neighbours-at-position {:x-pos x-pos 
+                                         :y-pos y-pos})]
+    (into [] 
+          (map #(value-at-position {:x-pos (first %) :y-pos (second %)} board)
+               neighbours))))
 
-(defn stone
-  [player x-pos y-pos]
-  {:player player
-   :x-pos x-pos
-   :y-pos y-pos})
 
 (defn go-string
-  "The initial shape of a go-string.
-   Handles default values for missing keys in the input map.
-   :stones will be a set of [x y] coordinate vectors.
-   :liberties will be an integer.
-   Returns an empty map if :player is not :black or :white."
-  ([]
-   {:player nil
-    :stones #{} ;
-    :liberties #{}})
-  ([m]
-   (let [player    (:player m)
-         stones    (set (:stones m #{}))     ;; Defaults to empty set if none.
-         liberties (set (:liberties m #{}))] ;; Defaults to empty set if none.
-     (if (#{:black :white} player)
-       {:player player
-        :stones stones
-        :liberties liberties}
-       {})
-     )))
-
-(defn update-go-string
   "Update or merge a go-string. Merges stones if players match and are valid.
 
    The function is agnostic to if we will update an existing Go string with
@@ -110,18 +94,23 @@
 
    Returns original map (m) if players don't match or if no map is
    provided for merging.
-   Throws ex-info if the initial player or the player in the update
+
+   Throws ex-info if the initial player or the player in the
    map is invalid.
-   The function supports mering only one string (for now)."
+
+   NOTE: The function supports merging only one string (for now).
+
+   NOTE: Operations on 'let with (set...) and (conj- ...) use default values
+         as fallback for consistency."
 
   [m & rst]
   (let [player         (:player m)
-        stones         (set (:stones m #{}))    ; Ensure set, defaults to empty set.
-        liberties      (set (:liberties m #{}))       ; Defaults to empty set.
-        conj-string    (first rst)              ; Get the first map from the rest args.
+        stones         (set (:stones m #{}))
+        liberties      (set (:liberties m #{}))
+        conj-string    (first rst)
         conj-player    (when conj-string (:player conj-string))
         conj-stones    (when conj-string (set (:stones conj-string #{})))
-        conj-liberties (when conj-string (:liberties conj-string liberties))] ; Default to m's liberties
+        conj-liberties (when conj-string (:liberties conj-string liberties))]
 
     (cond
       ;; 1. Validate player.
@@ -132,7 +121,9 @@
                        :player player
                        :map m}))
 
-      ;; 2. Nothing to merge? Return original map.
+      ;; 2. Nothing to merge? We are done and return original input map,
+      ;;    which can be a entirely new go-string, with the let' data from
+      ;;    the input parameters added..
       (not conj-string)
       m
 
@@ -162,6 +153,7 @@
   ([board lib]
    (update board :liberties disj lib)))
 
+
 (defn add-liberty
   "Function will take and return 'board -> board’ with one liberty added.
    The liberty has format [x-pos y-pos]."
@@ -169,3 +161,21 @@
    (update board :liberties conj lib))
   #_([board & libs]                      ;; TODO Adapt to collection of lib's
      (update board :liberties into libs)))
+
+
+(defn go-string->board
+  "Helper function that will apply a go-string on a board.
+   NOTE: the intentional design:
+         - We take the board from args and use as the reduce target.
+         - The stones are a set of tuples, and we deconstruct them in
+           the let binding as x and y.
+
+   Arguments gs is a go-string, b is a board vector (empty-board is
+   the reference format)."
+  [gs b]
+  (let [player (:player gs)
+        stones (:stones gs)]
+    (reduce (fn [board [x y]]
+              (update-position-at-board (stone x y player) board))
+            b
+            stones)))
