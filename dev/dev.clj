@@ -20,6 +20,14 @@
 ;; version:   0.1.1-SNAPSHOT            2025-04-04
 ;; -----------------------------------------------------------------------------
 
+;; TODO; These are valuable tests!
+(->> empty-board
+     (update-board {:x-pos 1 :y-pos 1 :value :black})
+     (value-at-position {:x-pos 1 :y-pos 1 :value :black}))
+
+(update-position-at-board {:x-pos 1 :y-pos 1 :value :black} empty-board)
+
+(->> empty-board (update-position-at-board {:x-pos 1 :y-pos 1 :value :black}))
 
 (comment ;; Go string
 
@@ -43,14 +51,14 @@
   (def second-string {:player :white :stones #{[5 5]} :liberties #{[2 2] [2 3]}})
 
   ;; Valid merge - OK
-  (update-go-string first-string {:player :black :stones #{[1 2]} :liberties #{[2 2] [2 3]}})
+  (go-string first-string {:player :black :stones #{[1 2]} :liberties #{[2 2] [2 3]}})
 
   ;; Players don't match - OK (returns original)
-  (update-go-string first-string {:player :white :stones #{[2 2]} :liberties #{[2 2] [2 3]}})
+  (go-string first-string {:player :white :stones #{[2 2]} :liberties #{[2 2] [2 3]}})
 
   ;; Initial player invalid - Throws ex-info
   (try
-    (update-go-string {:player :red} {:player :black :stones #{[1 1]}})
+    (go-string {:player :red} {:player :black :stones #{[1 1]}})
     (catch clojure.lang.ExceptionInfo e
       (println "Caught Exception:")
       (println "  Message:" (.getMessage e))
@@ -58,7 +66,7 @@
 
   ;; Incoming player invalid - Throws ex-info
   (try
-    (update-go-string second-string {:player :non-valid
+    (go-string second-string {:player :non-valid
                                      :stones #{[0 0] [0 1]}
                                      :liberties 2})
     (catch clojure.lang.ExceptionInfo e
@@ -67,10 +75,33 @@
       (println "  Data:" (ex-data e))))
 
   ;; Nothing to merge - OK (returns original)
-  (update-go-string first-string)
+  (go-string first-string)
 
   ;; --->
 )
+
+
+(comment
+  ;; Let's apply a go-string or two on a board. 
+  (def initial-white-string (go-string {:player :white :stones #{[0 1] [0 2]} :liberties #{[2 2] [2 3]}}))
+  (def initial-black-string (go-string {:player :black :stones #{[1 1] [1 2]} :liberties #{[2 2] [2 3]}}))
+  (go-string->board initial-black-string empty-board)
+  (->> empty-board
+       (go-string->board initial-black-string)
+       (go-string->board initial-white-string))
+  )
+
+(comment
+
+  (def initial-white-string (go-string {:player :white :stones #{[1 1] [1 2]} :liberties #{[2 2] [2 3]}}))
+  (def initial-black-string (go-string {:player :black :stones #{[1 1] [1 2]} :liberties #{[2 2] [2 3]}}))
+
+  ;; TODO:  We want to apply go-string(s) to a board.
+  (-> tb/symbolic-board initial-white-string)
+  (tb/symbolic-board empty-board #_initial-white-string)
+
+  ;;--->
+  )
 
 (comment ;; Testing remove-liberity
 
@@ -104,21 +135,21 @@
   (do
     (println "- - - - - - - - - - - - -")
     (println
-     (-> empty-board
-         (update-board 0 0   :black)
-         (update-board 12 0  :black)
-         (update-board 1 1   :black)
-         (update-board 1 1   :black)
-         (update-board 1 2   :black)
-         (update-board 1 3   :black)
-         (update-board 11 2  :black)
-         (update-board 11 1  :white)
-         (update-board 1 9   :white)
-         (update-board 1 10  :white)
-         (update-board 1 11  :white)
-         (update-board 0 12  :black)
-         (update-board 12 12 :black)
-         (tb/symbolic-board))))
+     (->> empty-board
+          (update-position-at-board (stone 0 0   :black))
+          (update-position-at-board (stone 12 0  :black))
+          (update-position-at-board (stone 1 1   :black))
+          (update-position-at-board (stone 1 1   :black))
+          (update-position-at-board (stone 1 2   :black))
+          (update-position-at-board (stone 1 3   :black))
+          (update-position-at-board (stone 11 2  :black))
+          (update-position-at-board (stone 11 1  :white))
+          (update-position-at-board (stone 1 9   :white))
+          (update-position-at-board (stone 1 10  :white))
+          (update-position-at-board (stone 1 11  :white))
+          (update-position-at-board (stone 0 12  :black))
+          (update-position-at-board (stone 12 12 :black))
+          (tb/symbolic-board))))
 
   ;;--->comment
   )
