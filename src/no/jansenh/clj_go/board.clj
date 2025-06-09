@@ -1,65 +1,72 @@
+;; -----------------------------------------------------------------------------
+;; File: src/no/jansenh/clj_go/board.clj
+;; Author: Henning Jansen - henning.jansen@jansenh.no
+;; Copyright: (c) 2025
+;; License: Distributed under the GNU General Public License v3.0
+;; as described in the root of this project.
+;; -----------------------------------------------------------------------------
 (ns no.jansenh.clj-go.board
   (:require [seesaw.color :as color]
             [seesaw.core :as s]
             [seesaw.graphics :as g]))
-;;;;
-;;;;  Clj-go board
-;;;;  ------------
-;;;;
-;;;;    Clojure Go Game board implementation, using Seesaw clojure wrapper
-;;;;    for Java Swing AWT graphics.
-;;;;
-;;;;    Henning Jansen 2025  Copyright © henning.jansen@jansenh.no
-;;;;    Distributed under the GNU General Public License v3.0 as
-;;;;    described in the root of this project.
-;;;;
-;;;;    The Board has a basic state with:
-;;;;      - black and white stones on a grid,
-;;;;      - current player :black or :white,
-;;;;      - events capturing mouse interaction from placing stones on the
-;;;;        board and clicking the game buttons.
-;;;;
-;;;;    We got buttons for:
-;;;;      1. pass turn
-;;;;      2. resign
-;;;;      3. close
-;;;;
-;;;;    The board has an API for interacting with the game programatically,
-;;;;    currently supporting player :white.
-;;;;
-;;;;    The API support
-;;;;      - :white add stone to the board, return true/false.
-;;;;      - :white pass move.
-;;;;
-;;;;
-;;;;
+;;
+;;  Clj-go board
+;;  ------------
+;;
+;;    Clojure Go Game board implementation, using Seesaw clojure wrapper
+;;    for Java Swing AWT graphics.
+;;
+;;    Henning Jansen 2025  Copyright © henning.jansen@jansenh.no
+;;    Distributed under the GNU General Public License v3.0 as
+;;    described in the root of this project.
+;;
+;;    The Board has a basic state with:
+;;      - black and white stones on a grid,
+;;      - current player :black or :white,
+;;      - events capturing mouse interaction from placing stones on the
+;;        board and clicking the game buttons.
+;;
+;;    We got buttons for:
+;;      1. pass turn
+;;      2. resign
+;;      3. close
+;;
+;;    The board has an API for interacting with the game programatically,
+;;    currently supporting player :white.
+;;
+;;    The API support
+;;      - :white add stone to the board, return true/false.
+;;      - :white pass move.
+;;
+;;
+;;
 
-;;;; ---------------------------------------------------------------------------
-;;;  Definitions
-;;;
+;; ------------------------------------------------------------------------------
+;;  Definitions
+;;
 (def board-size 12)          ; cells define grid intersections (+ 1 board-size)
 (def cell-size 50)
 (def stone-radius 17)
 (def board-margin 40)
 (def total-size (+ (* board-size cell-size) (* 2 board-margin)))
 
-;;;  Reign in blood!
-;;;
-;;;     --- This is where evil reside. ----
-;;;
-;;;  State management.
-;;;
-;;;    The board is initialized with a two-dimensional vector of nils,
-;;;    ready to hold state of each Gp board grid intersection with a single
-;;;    player stone :black or :white.
+;;  Reign in blood!
+;;
+;;     --- This is where evil reside. ----
+;;
+;;  State management.
+;;
+;;    The board is initialized with a two-dimensional vector of nils,
+;;    ready to hold state of each Gp board grid intersection with a single
+;;    player stone :black or :white.
 
 (def board-state (atom {:board (vec (repeat (inc board-size)
                                            (vec (repeat (inc board-size) nil))))
                        :current-player :black}))
 
-;;; ----------------------------------------------------------------------------
-;;;    Utility functions
-;;;
+;; ------------------------------------------------------------------------------
+;;    Utility functions
+;;
 
 (defn get-intersection-position
   "Convert board coordinates to pixel coordinates"
@@ -127,12 +134,12 @@
        (.validate frame)
        (.repaint frame)))))
 
-;;; ----------------------------------------------------------------------------
-;;;     ML Player - automata using machine learning.
-;;;
-;;;        The game is being set up with player white being non-human, interacting
-;;;        with board-state via an api.
-;;;
+;; ------------------------------------------------------------------------------
+;;     ML Player - automata using machine learning.
+;;
+;;        The game is being set up with player white being non-human, interacting
+;;        with board-state via an api.
+;;
 
 (defn make-white-move
   "External function for placing a white stone on the board.
@@ -174,9 +181,9 @@
     nil))
 
 
-;;; ----------------------------------------------------------------------------
-;;;   The UI and it's interactions.
-;;;
+;; ------------------------------------------------------------------------------
+;;   The UI and it's interactions.
+;;
 
 ;; Draw the board from definitions, with stone from board-state.
 (defn draw-board [c g]

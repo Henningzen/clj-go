@@ -1,3 +1,10 @@
+;; -----------------------------------------------------------------------------
+;; File: src/no/jansenh/clj_go/utilities.clj
+;; Author: Henning Jansen - henning.jansen@jansenh.no
+;; Copyright: (c) 2025
+;; License: Distributed under the GNU General Public License v3.0
+;; as described in the root of this project.
+;; -----------------------------------------------------------------------------
 (ns no.jansenh.clj-go.utilities)
 
 ;;; ----------------------------------------------------------------------------
