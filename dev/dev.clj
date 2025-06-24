@@ -22,7 +22,7 @@
 
 ;; TODO; These are valuable tests!
 (->> empty-board
-     (update-board {:x-pos 1 :y-pos 1 :value :black})
+     (update-position-at-board {:x-pos 1 :y-pos 1 :value :black})
      (value-at-position {:x-pos 1 :y-pos 1 :value :black}))
 
 (update-position-at-board {:x-pos 1 :y-pos 1 :value :black} empty-board)
@@ -30,6 +30,16 @@
 (->> empty-board (update-position-at-board {:x-pos 1 :y-pos 1 :value :black}))
 
 (comment ;; Go string
+
+  ;; We now got an arity for calling an empty go-string,
+  (def empty-go-string (go-string))
+  (assoc empty-go-string :player :black)
+
+  (-> (go-string)
+      (assoc :player :black)
+      (assoc :stones #{[0 0]})
+      (assoc :liberties #{[1 0] [0 1]}))
+
 
   ;; Input with :stones as a set of vectors
   (go-string {:player :black :stones #{[1 1] [1 2]} :liberties #{[2 2] [2 3]}})
@@ -105,21 +115,21 @@
 
 (comment ;; Testing remove-liberity
 
-  (def initial-board (go-string {:player :black
+  (def initial-go-string (go-string {:player :black
                                  :stones #{[1 1] [1 2]}
                                  :liberties #{[2 2] [2 3]}}))
 
-  (-> initial-board
+  (-> initial-go-string
       :liberties
       count
       (= 2))
 
-  (-> (remove-liberty initial-board [2 3])
+  (-> (remove-liberty initial-go-string [2 3])
       :liberties
       count
       (= 1))
 
-  (-> initial-board
+  (-> initial-go-string
       (remove-liberty [2 2])
       (remove-liberty [2 3])
       :liberites
