@@ -37,8 +37,8 @@
 
 (defn position->
   "Helper function for transforming position vector or map.
-   1. Create a vector [x y} from a map with :x-pos and :y-pos.
-   2. Creates a x-pos, y-pos map from [x y] values."
+   1. Create a vector [x y] from a map with {:x-pos x, :y-pos y}.
+   2. Creates a {:x-pos x, :y-pos y} map from [x y] values."
   ([m]
    [(:x-pos m) {:y-pos m}])
   ([x y]
@@ -87,10 +87,14 @@
 (defn go-string
   "Update or merge a go-string. Merges stones if players match and are valid.
 
+   The first arity return an empty go-string.
+
+   The second arity in the function takes one Go string map and one additional
+   Go string map.
+
    The function is agnostic to if we will update an existing Go string with
    a new version of itself, or if we are merging another Go string in top of
-   the existing Go string. The function takes one Go string map and one
-   additional Go string map.
+   the existing Go string. 
 
    Returns original map (m) if players don't match or if no map is
    provided for merging.
@@ -102,63 +106,63 @@
 
    NOTE: Operations on 'let with (set...) and (conj- ...) use default values
          as fallback for consistency."
+  ([]
+   {:player nil :stones #{} :liberties #{}})
+  ([m & rst]
+   (let [player         (:player m)
+         stones         (set (:stones m #{}))
+         liberties      (set (:liberties m #{}))
+         conj-string    (first rst)
+         conj-player    (when conj-string (:player conj-string))
+         conj-stones    (when conj-string (set (:stones conj-string #{})))
+         conj-liberties (when conj-string (:liberties conj-string liberties))]
 
-  [m & rst]
-  (let [player         (:player m)
-        stones         (set (:stones m #{}))
-        liberties      (set (:liberties m #{}))
-        conj-string    (first rst)
-        conj-player    (when conj-string (:player conj-string))
-        conj-stones    (when conj-string (set (:stones conj-string #{})))
-        conj-liberties (when conj-string (:liberties conj-string liberties))]
+     (cond
+       ;; 1. Validate player.
+       (not (#{:black :white} player))
+       (throw (ex-info "Invalid player value in initial map."
+                       {:type ::invalid-player
+                        :reason :initial-map-invalid
+                        :player player
+                        :map m}))
 
-    (cond
-      ;; 1. Validate player.
-      (not (#{:black :white} player))
-      (throw (ex-info "Invalid player value in initial map."
-                      {:type ::invalid-player
-                       :reason :initial-map-invalid
-                       :player player
-                       :map m}))
+       ;; 2. Nothing to merge? We are done and return original input map,
+       ;;    which can be a entirely new go-string, with the let' data from
+       ;;    the input parameters added..
+       (not conj-string)
+       m
 
-      ;; 2. Nothing to merge? We are done and return original input map,
-      ;;    which can be a entirely new go-string, with the let' data from
-      ;;    the input parameters added..
-      (not conj-string)
-      m
+       ;; 3.Validate player in merged map.
+       (not (#{:black :white} conj-player))
+       (throw (ex-info "Invalid player value in update map."
+                       {:type ::invalid-player
+                        :reason :update-map-invalid
+                        :player conj-player
+                        :update-map conj-string
+                        :initial-map m}))
 
-      ;; 3.Validate player in merged map.
-      (not (#{:black :white} conj-player))
-      (throw (ex-info "Invalid player value in update map."
-                      {:type ::invalid-player
-                       :reason :update-map-invalid
-                       :player conj-player
-                       :update-map conj-string
-                       :initial-map m}))
+       ;; 4. Does the validated players match? Merge
+       (= player conj-player)
+       {:player player
+        :stones (set/union stones conj-stones)
+        :liberties (set/union liberties conj-liberties)}
 
-      ;; 4. Does the validated players match? Merge
-      (= player conj-player)
-      {:player player
-       :stones (set/union stones conj-stones)
-       :liberties (set/union liberties conj-liberties)}
-
-      ;; 5. Else: Players are valid but different. Don't merge.
-      :else
-      m)))
+       ;; 5. Else: Players are valid but different. Don't merge.
+       :else m))))
 
 
 (defn remove-liberty
-  "Function will take and return 'board -> board’ with one liberty removed.
+  "Remove libery from go-string..
    The liberty has format [x-pos y-pos]."
-  ([board lib]
-   (update board :liberties disj lib)))
+  ([go-string lib]
+   (update go-string :liberties disj lib)))
 
 
 (defn add-liberty
-  "Function will take and return 'board -> board’ with one liberty added.
+  "Add libery to go-string.
    The liberty has format [x-pos y-pos]."
-  ([board lib]
-   (update board :liberties conj lib))
+  ([go-string lib]
+   (update go-string :liberties conj lib))
   #_([board & libs]                      ;; TODO Adapt to collection of lib's
      (update board :liberties into libs)))
 
@@ -170,8 +174,10 @@
          - The stones are a set of tuples, and we deconstruct them in
            the let binding as x and y.
 
-   Arguments gs is a go-string, b is a board vector (empty-board is
-   the reference format)."
+   Arguments:
+     - gs is a go-string
+     - b is a board vector (empty-board is the reference format).
+  "
   [gs b]
   (let [player (:player gs)
         stones (:stones gs)]
