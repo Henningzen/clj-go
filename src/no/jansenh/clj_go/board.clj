@@ -55,8 +55,8 @@
 ;;  State Management
 
 (def board-state (atom {:board (vec (repeat board-size
-                                           (vec (repeat board-size nil))))
-                       :current-player :black}))
+                                            (vec (repeat board-size nil))))
+                        :current-player :black}))
 
 ;; ------------------------------------------------------------------------------
 ;;  Utility Functions
@@ -156,7 +156,7 @@
   (if (= (:current-player @board-state) :white)
     (do
       (swap! board-state assoc :current-player :black)
-       true)
+      true)
     false))
 
 (defn white-resign

@@ -20,7 +20,6 @@
 ;; version:   0.1.1-SNAPSHOT            2025-06-04
 ;; -----------------------------------------------------------------------------
 
-
 (def empty-board
   "Default empty board, 19 by 19 in x-pos, y-pos vectors. Values are nil."
   (vec (for [row (range 19)]
@@ -34,7 +33,6 @@
    :x-pos x-pos
    :y-pos y-pos})
 
-
 (defn position->
   "Helper function for transforming position vector or map.
    1. Create a vector [x y] from a map with {:x-pos x, :y-pos y}.
@@ -45,7 +43,6 @@
    {:x-pos x
     :y-pos y}))
 
-
 (defn update-position-at-board
   "Updates the board at the specified x and y position with the given value.
    The value is a player :black or :white or nil.
@@ -54,14 +51,12 @@
   [{:keys [x-pos y-pos player]} board]
   (assoc-in board [y-pos x-pos] player))
 
-
 (defn value-at-position
   "Gets state of a given position on board.
    - position x is horisontal,
    - position y is vertical."
   [{:keys [x-pos y-pos]} board]
   (get-in board [y-pos x-pos]))
-
 
 (defn neighbours-at-position
   "Gets the positions of the neighbors on a given position, arranged
@@ -72,17 +67,15 @@
    [x-pos (+ y-pos 1)]
    [(- x-pos 1) y-pos]])
 
-
 (defn neighbours-value
   "Gets the values of the neighbors on a given position, arranged
    as follows: north, east, south, and west."
   [{:keys [x-pos y-pos]} board]
-  (let [neighbours (neighbours-at-position {:x-pos x-pos 
-                                         :y-pos y-pos})]
-    (into [] 
+  (let [neighbours (neighbours-at-position {:x-pos x-pos
+                                            :y-pos y-pos})]
+    (into []
           (map #(value-at-position {:x-pos (first %) :y-pos (second %)} board)
                neighbours))))
-
 
 (defn go-string
   "Update or merge a go-string. Merges stones if players match and are valid.
@@ -150,13 +143,11 @@
        ;; 5. Else: Players are valid but different. Don't merge.
        :else m))))
 
-
 (defn remove-liberty
   "Remove libery from go-string..
    The liberty has format [x-pos y-pos]."
   ([go-string lib]
    (update go-string :liberties disj lib)))
-
 
 (defn add-liberty
   "Add libery to go-string.
@@ -165,7 +156,6 @@
    (update go-string :liberties conj lib))
   #_([board & libs]                      ;; TODO Adapt to collection of lib's
      (update board :liberties into libs)))
-
 
 (defn go-string->board
   "Helper function that will apply a go-string on a board.

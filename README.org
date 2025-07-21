@@ -44,6 +44,7 @@
 
    If you choose to use the project in a REPL, you can interact with the game
    as player white through an API.
+
    #+BEGIN_SRC clojure
      ;;  navigate to the board namespace
      (ns no.jansenh.clj-go.board)
@@ -61,6 +62,14 @@
    #+BEGIN_SRC shell
      clojure -T:build test
      clojure -X:test
+   #+END_SRC
+
+** Source code formatting
+   We use [[https://github.com/weavejester/cljfmt][weavejester's cljfmt]] for source code formatting.
+
+   #+BEGIN_SRC shell
+     clj -Tcljfmt check
+     clj -Tcljfmt fix
    #+END_SRC
 
 ** CI pipeline
