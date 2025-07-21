@@ -7,9 +7,9 @@
 ;; -----------------------------------------------------------------------------
 (ns no.jansenh.clj-go.utilities)
 
-;;; ----------------------------------------------------------------------------
-;;;   Test data utilities
-;;;
+;; ----------------------------------------------------------------------------
+;; Test data utilities
+;;
 
 ;; We got a data-structure with numbers only, used for 
 ;; testing vectors and positions. The data-structure is
