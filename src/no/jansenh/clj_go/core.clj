@@ -22,9 +22,9 @@
 
 
 (def empty-board
-  "Default empty board, 13 by 13 in x-pos, y-pos vectors. Values are nil."
-  (vec (for [row (range 13)]
-         (vec (for [col (range 13)]
+  "Default empty board, 19 by 19 in x-pos, y-pos vectors. Values are nil."
+  (vec (for [row (range 19)]
+         (vec (for [col (range 19)]
                 nil)))))
 
 (defn stone

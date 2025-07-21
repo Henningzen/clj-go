@@ -8,7 +8,8 @@
 (ns no.jansenh.clj-go.board
   (:require [seesaw.color :as color]
             [seesaw.core :as s]
-            [seesaw.graphics :as g]))
+            [seesaw.graphics :as g])
+  (:import [java.awt Color]))
 ;;
 ;;  Clj-go board
 ;;  ------------
@@ -43,30 +44,22 @@
 
 ;; ------------------------------------------------------------------------------
 ;;  Definitions
-;;
-(def board-size 12)          ; cells define grid intersections (+ 1 board-size)
-(def cell-size 50)
-(def stone-radius 17)
-(def board-margin 40)
+
+(def board-size 19)          ; intersections define grid intersections
+(def cell-size 30)           ; Adjusted cell size for a 19x19 board
+(def stone-radius 13)        ; Adjusted stone radius for a 19x19 board
+(def board-margin 20)        ; Adjusted board margin for a 19x19 board
 (def total-size (+ (* board-size cell-size) (* 2 board-margin)))
 
-;;  Reign in blood!
-;;
-;;     --- This is where evil reside. ----
-;;
-;;  State management.
-;;
-;;    The board is initialized with a two-dimensional vector of nils,
-;;    ready to hold state of each Gp board grid intersection with a single
-;;    player stone :black or :white.
+;; ------------------------------------------------------------------------------
+;;  State Management
 
-(def board-state (atom {:board (vec (repeat (inc board-size)
-                                           (vec (repeat (inc board-size) nil))))
+(def board-state (atom {:board (vec (repeat board-size
+                                           (vec (repeat board-size nil))))
                        :current-player :black}))
 
 ;; ------------------------------------------------------------------------------
-;;    Utility functions
-;;
+;;  Utility Functions
 
 (defn get-intersection-position
   "Convert board coordinates to pixel coordinates"
@@ -79,14 +72,14 @@
   [x y]
   (let [i (Math/round (float (/ (- x board-margin) cell-size)))
         j (Math/round (float (/ (- y board-margin) cell-size)))]
-    (when (and (<= 0 i board-size) (<= 0 j board-size))
+    (when (and (<= 0 i (dec board-size)) (<= 0 j (dec board-size)))
       [i j])))
 
 (defn place-stone
   "Place a stone on the board if the position is valid"
   [i j player]
-  (when (and (<= 0 i board-size)
-             (<= 0 j board-size)
+  (when (and (<= 0 i (dec board-size))
+             (<= 0 j (dec board-size))
              (nil? (get-in @board-state [:board j i])))
     (swap! board-state
            (fn [state]
@@ -105,8 +98,8 @@
   "Count the number of black and white stones on the board"
   []
   (let [board (:board @board-state)
-        stones (for [i (range (inc board-size))
-                     j (range (inc board-size))
+        stones (for [i (range board-size)
+                     j (range board-size)
                      :let [stone (get-in board [j i])]
                      :when stone]
                  stone)
@@ -135,11 +128,7 @@
        (.repaint frame)))))
 
 ;; ------------------------------------------------------------------------------
-;;     ML Player - automata using machine learning.
-;;
-;;        The game is being set up with player white being non-human, interacting
-;;        with board-state via an api.
-;;
+;;  ML Player - Automata using Machine Learning
 
 (defn make-white-move
   "External function for placing a white stone on the board.
@@ -147,8 +136,8 @@
    Takes board coordinates [i j] and returns true if successful, false otherwise."
   [[i j]]
   (if (and (= (:current-player @board-state) :white)
-           (<= 0 i board-size)
-           (<= 0 j board-size)
+           (<= 0 i (dec board-size))
+           (<= 0 j (dec board-size))
            (nil? (get-in @board-state [:board j i])))
     (do
       (swap! board-state
@@ -180,12 +169,9 @@
       (handle-resign))
     nil))
 
-
 ;; ------------------------------------------------------------------------------
-;;   The UI and it's interactions.
-;;
+;;  The UI and Its Interactions
 
-;; Draw the board from definitions, with stone from board-state.
 (defn draw-board [c g]
   (let [bg-color (color/color 220 179 92)]
     ;; Draw background
@@ -194,31 +180,30 @@
             (g/style :background bg-color))
 
     ;; Draw grid lines
-    (doseq [i (range (inc board-size))]
+    (doseq [i (range board-size)]
       (let [pos (+ board-margin (* i cell-size))]
         ;; Horizontal lines
         (g/draw g
-                (g/line pos board-margin pos (+ board-margin (* board-size cell-size)))
-                (g/style :foreground java.awt.Color/BLACK :stroke 2))
+                (g/line pos board-margin pos (+ board-margin (* (dec board-size) cell-size)))
+                (g/style :foreground Color/BLACK :stroke 2))
         ;; Vertical lines
         (g/draw g
-                (g/line board-margin pos (+ board-margin (* board-size cell-size)) pos)
-                (g/style :foreground java.awt.Color/BLACK :stroke 2))))
+                (g/line board-margin pos (+ board-margin (* (dec board-size) cell-size)) pos)
+                (g/style :foreground Color/BLACK :stroke 2))))
 
     ;; Draw stones
-    (doseq [i (range (inc board-size))
-            j (range (inc board-size))]
+    (doseq [i (range board-size)
+            j (range board-size)]
       (let [stone (get-in @board-state [:board j i])]
         (when stone
           (let [[x y] (get-intersection-position i j)
-                stone-color (if (= stone :black) java.awt.Color/BLACK java.awt.Color/WHITE)]
+                stone-color (if (= stone :black) Color/BLACK Color/WHITE)]
             (g/draw g
                     (g/circle x y stone-radius)
-                    (g/style :foreground java.awt.Color/BLACK
+                    (g/style :foreground Color/BLACK
                              :background stone-color
                              :stroke 1.5))))))))
 
-;; Create UI components
 (defn create-panel []
   (let [panel (s/canvas :id :board
                         :background (color/color 220 179 92)
