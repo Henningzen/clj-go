@@ -18,6 +18,11 @@
     (is (= 361 (sut/value-at-position (sut/position-> 18 18) utils/numeric-board)))
     (is (= 343 (sut/value-at-position (sut/position-> 0 18) utils/numeric-board)))))
 
+(deftest test-position->
+  (testing "We expect to get formal positions map from natural position x y"
+    (is (= {:x-pos 1 :y-pos 1} (sut/position-> 1 1)))
+    (is (= [1 1] (sut/position-> {:x-pos 1 :y-pos 1})))))
+
 (deftest test-neighbours-at-position
   (testing "We expect to find the neighbours positions on the numeric board."
     (is (= [[2 1] [3 2] [2 3] [1 2]]
@@ -42,3 +47,12 @@
     (is (= :white (:player (sut/stone 3 4 :white))))
     (is (=  3 (:x-pos (sut/stone 3 4 :black))))
     (is (=  4 (:y-pos (sut/stone 3 4 :white))))))
+
+(deftest test-update-position-at-board
+  (testing "We expect to update position at board."
+    (is (= :black (->> sut/empty-board
+                       (sut/update-position-at-board (sut/stone 0 0 :black))
+                       (sut/value-at-position (sut/position-> 0 0)))))
+    (is (= :white (->> sut/empty-board
+                       (sut/update-position-at-board (sut/stone 19 19 :white))
+                       (sut/value-at-position (sut/position-> 19 19)))))))
