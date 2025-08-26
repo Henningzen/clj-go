@@ -38,7 +38,7 @@
    1. Create a vector [x y] from a map with {:x-pos x, :y-pos y}.
    2. Creates a {:x-pos x, :y-pos y} map from [x y] values."
   ([m]
-   [(:x-pos m) {:y-pos m}])
+   [(:x-pos m) (:y-pos m)])
   ([x y]
    {:x-pos x
     :y-pos y}))
