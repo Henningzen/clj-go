@@ -98,17 +98,23 @@
   (go-string->board initial-black-string empty-board)
   (->> empty-board
        (go-string->board initial-black-string)
-       (go-string->board initial-white-string))
-  )
+       (go-string->board initial-white-string)
+       (tb/symbolic-board)
+       (println))
+  
+  ;;--->
+)
+
+
 
 (comment
 
   (def initial-white-string (go-string {:player :white :stones #{[1 1] [1 2]} :liberties #{[2 2] [2 3]}}))
   (def initial-black-string (go-string {:player :black :stones #{[1 1] [1 2]} :liberties #{[2 2] [2 3]}}))
 
-  ;; TODO:  We want to apply go-string(s) to a board.
+  ;; TODO:  We want to apply go-string(s) to a board.  TODO!!!
   (-> tb/symbolic-board initial-white-string)
-  (tb/symbolic-board empty-board #_initial-white-string)
+  (tb/symbolic-board empty-board #_initial-white-string)q
 
   ;;--->
   )
