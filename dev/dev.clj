@@ -40,7 +40,6 @@
       (assoc :stones #{[0 0]})
       (assoc :liberties #{[1 0] [0 1]}))
 
-
   ;; Input with :stones as a set of vectors
   (go-string {:player :black :stones #{[1 1] [1 2]} :liberties #{[2 2] [2 3]}})
 
@@ -92,16 +91,17 @@
 
 
 (comment
-  ;; Let's apply a go-string or two on a board. 
+  ;; Let's apply a go-string or two on a board.
   (def initial-white-string (go-string {:player :white :stones #{[0 1] [0 2]} :liberties #{[2 2] [2 3]}}))
   (def initial-black-string (go-string {:player :black :stones #{[1 1] [1 2]} :liberties #{[2 2] [2 3]}}))
+
   (go-string->board initial-black-string empty-board)
   (->> empty-board
        (go-string->board initial-black-string)
        (go-string->board initial-white-string)
        (tb/symbolic-board)
        (println))
-  
+
   ;;--->
 )
 
@@ -114,7 +114,7 @@
 
   ;; TODO:  We want to apply go-string(s) to a board.  TODO!!!
   (-> tb/symbolic-board initial-white-string)
-  (tb/symbolic-board empty-board #_initial-white-string)q
+  (tb/symbolic-board empty-board #_initial-white-string)
 
   ;;--->
   )
@@ -153,18 +153,18 @@
     (println
      (->> empty-board
           (update-position-at-board (stone 0 0   :black))
-          (update-position-at-board (stone 12 0  :black))
-          (update-position-at-board (stone 1 1   :black))
-          (update-position-at-board (stone 1 1   :black))
-          (update-position-at-board (stone 1 2   :black))
-          (update-position-at-board (stone 1 3   :black))
-          (update-position-at-board (stone 11 2  :black))
-          (update-position-at-board (stone 11 1  :white))
-          (update-position-at-board (stone 1 9   :white))
-          (update-position-at-board (stone 1 10  :white))
-          (update-position-at-board (stone 1 11  :white))
-          (update-position-at-board (stone 0 12  :black))
-          (update-position-at-board (stone 12 12 :black))
+          (update-position-at-board (stone 1 1  :white))
+          ;; (update-position-at-board (stone 1 1   :black))
+          ;; (update-position-at-board (stone 2 1   :black))
+          ;; (update-position-at-board (stone 3 1   :black))
+          ;; (update-position-at-board (stone 18 1   :black))
+          ;; (update-position-at-board (stone 18 2  :black))
+          ;; (update-position-at-board (stone 18 1  :white))
+          ;; (update-position-at-board (stone 1 9   :white))
+          ;; (update-position-at-board (stone 1 10  :white))
+          ;; (update-position-at-board (stone 1 11  :white))
+          (update-position-at-board (stone 18 1  :black))
+          (update-position-at-board (stone 18 18 :black))
           (tb/symbolic-board))))
 
   ;;--->comment

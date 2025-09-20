@@ -11,6 +11,14 @@
     (is (= 201 (sut/value-at-position (sut/position-> 10 10) utils/numeric-board)))
     (is (= 193 (sut/value-at-position (sut/position-> 2 10) utils/numeric-board)))))
 
+(deftest test-pos-2
+  (testing "We expect to find the corresponding [x y] value on the numeric board."
+    (is (= 1 (sut/value-at-position (sut/position-> 0 0) utils/numeric-board)))
+    (is (= 343 (sut/value-at-position (sut/position-> 0 18) utils/numeric-board)))
+    (is (= 19 (sut/value-at-position (sut/position-> 18 0) utils/numeric-board)))
+    (is (= 361 (sut/value-at-position (sut/position-> 18 18) utils/numeric-board)))
+    ))
+
 (deftest test-pos-edges
   (testing "We expect to find the corresponding [x y] value on the numeric board edges."
     (is (= 1   (sut/value-at-position (sut/position-> 0 0) utils/numeric-board)))
@@ -19,7 +27,7 @@
     (is (= 343 (sut/value-at-position (sut/position-> 0 18) utils/numeric-board)))))
 
 (deftest test-position->
-  (testing "We expect to get formal positions map from natural position x y"
+ (testing "We expect to convert positions map and vector."
     (is (= {:x-pos 1 :y-pos 1} (sut/position-> 1 1)))
     (is (= [1 1] (sut/position-> {:x-pos 1 :y-pos 1})))))
 
@@ -56,3 +64,11 @@
     (is (= :white (->> sut/empty-board
                        (sut/update-position-at-board (sut/stone 19 19 :white))
                        (sut/value-at-position (sut/position-> 19 19)))))))
+
+(deftest test-go-string
+  "Let's test go-strings!"
+  (let [first-string {:player :black :stones #{[1 1]} :liberties #{[2 2] [2 3]}}
+        second-string {:player :white :stones #{[5 5]} :liberties #{[2 2] [2 3]}}]
+    (testing "Test basic go-string"
+      (is (= 2 (count (:liberties first-string))))
+      (is (= 1 (count (:stones first-string)))))))

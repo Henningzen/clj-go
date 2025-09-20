@@ -20,24 +20,53 @@
 ;; version:   0.1.1-SNAPSHOT
 ;; -----------------------------------------------------------------------------
 
-(defn- value-to-symbol
-  "Convert a board value to its symbolic representation."
-  [value]
+(def board-size 19)
+
+(defn- value-to-symbol [value]
+  ;; Convert a board value to its symbolic representation.
   (case value
     :white "○ "
     :black "● "
     nil "  "))
 
-(defn- convert-to-symbols
-  "Convert each value in the board to its symbolic representation."
-  [board]
-  (map (fn [row]
-         (apply str (map value-to-symbol row)))
-       board))
+(defn- convert-to-symbols [board]
+  ;; Convert each value in the board to its symbolic representation.
+  ;; The board is a vector of vectors, hence the implicit board -> row mapping
+  (map (fn [row] (apply str (map value-to-symbol row))) board))
+
+(defn- generate-column-annotations []
+  ;; Generate column annotations (A to S for a 19x19 board)
+  ;; separated by one space.
+  (apply str (interpose " " (map char (range (int \A) (+ (int \A) board-size))))))
+
+
+(defn- generate-row-annotations []
+  ;; Generate row annotations (19 to 1 for a 19x19 board).
+  (apply str (interpose "\n" (reverse (range 1 (inc board-size))))))
+
+(defn- pad-row-annotations [row-annotations]
+  ;; Pad row annotations with spaces to align with the board.
+  (map (fn [row] (str (format "%2d" (Integer/parseInt row)) " "))
+       (clojure.string/split-lines row-annotations)))
+
 
 (defn symbolic-board
-  "Create a symbolic board 'o - ●' for white, blank (nil) and  black values.
-   The intended use is for visualization for debugging in repl or writing
-   as text file."
+  "Create a symbolic board. 
+
+   The board has row and column annotations. The string is intended 
+   for visualization in REPL or text file.
+   
+   Arguments: board (reference vector structure in core namespace)
+
+   Returns: String, padded with row/col annotations, formatted with
+                    newline and space.
+   "
   [board]
-  (apply str (interpose "\n" (convert-to-symbols board))))
+  (let [column-annotations (generate-column-annotations)
+        row-annotations (generate-row-annotations)
+        padded-row-annotations (pad-row-annotations row-annotations)
+        board-with-annotations (map (fn [row-annotation row]
+                                      (str row-annotation (apply str (map value-to-symbol row))))
+                                    padded-row-annotations
+                                    board)]
+    (str "   " column-annotations "\n" (apply str (interpose "\n" board-with-annotations)))))

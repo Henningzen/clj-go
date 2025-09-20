@@ -20,10 +20,12 @@
 ;; version:   0.1.1-SNAPSHOT            2025-06-04
 ;; -----------------------------------------------------------------------------
 
+(def board-size 19)
+
 (def empty-board
   "Default empty board, 19 by 19 in x-pos, y-pos vectors. Values are nil."
-  (vec (for [row (range 19)]
-         (vec (for [col (range 19)]
+  (vec (for [row (range board-size)]
+         (vec (for [col (range board-size)]
                 nil)))))
 
 (defn stone

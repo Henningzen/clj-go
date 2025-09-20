@@ -9,22 +9,34 @@
 
 ;; ----------------------------------------------------------------------------
 ;; Test data utilities
+;; -------------------
 ;;
+;;
+;; authors:   Henning Jansen            henning.jansen@jansenh.no
+;; since:     0.1.1-SNAPSHOT            2025-04-17
+;; version:   0.1.1-SNAPSHOT
+;; -----------------------------------------------------------------------------
 
-;; We got a data-structure with numbers only, used for 
-;; testing vectors and positions. The data-structure is
-;; a representation of a board with 13 by 13 vector,
-;; numbers 1 to 169.
+;; 
+;; testing vectors and positions. .
 (def numeric-board
+  "Data structure with sequence numbers.
+
+   The data-structure is a representation of a board with n by n vector of
+   vectors, numbers increasing from one.
+  "
   (vec (for [row (range 19)]
          (vec (for [col (range 19)]
                 (inc (+ col (* row 19))))))))
 
-;; We got a scattered board with cycled values, evenly
-;; distributed white, black stones with empty intersects.
-;; The data-structure is a representation of a board with
-;; 13 by 13 vector with values :black :white and :nil.
+
 (def patterned-board
+  "Scattered board with cycled values.
+
+   Evenly distributed white, black stones with empty (nil) intersects.
+   The data-structure is a representation of a board with
+   19 by 19 vector with values :black :white and :nil.
+  "
   (->> (take 361 (cycle [:black :nil :white :nil]))
        (partition 19)
        (mapv vec)))
