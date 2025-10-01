@@ -24,6 +24,7 @@
 
 (defn- value-to-symbol [value]
   ;; Convert a board value to its symbolic representation.
+  ;; (replace the blanks with "· " for stylish dotted grid....)
   (case value
     :white "○ "
     :black "● "
@@ -34,11 +35,18 @@
   ;; The board is a vector of vectors, hence the implicit board -> row mapping
   (map (fn [row] (apply str (map value-to-symbol row))) board))
 
-(defn- generate-column-annotations []
+#_(defn- generate-column-annotations []
   ;; Generate column annotations (A to S for a 19x19 board)
   ;; separated by one space.
   (apply str (interpose " " (map char (range (int \A) (+ (int \A) board-size))))))
 
+(defn- generate-column-annotations []
+  ;; Generate column annotations (A to T for a 19x19 board).
+  ;; separated by one space.
+  ;;
+  ;; NOTE: We skip the letter 'I' along with common Go convention,
+  ;;       hence the range for 19 characters span to T.
+  (apply str (interpose " " (map char (seq [\A \B \C \D \E \F \G \H \J \K \L \M \N \O \P \Q \R \S \T])))))
 
 (defn- generate-row-annotations []
   ;; Generate row annotations (19 to 1 for a 19x19 board).
@@ -48,7 +56,6 @@
   ;; Pad row annotations with spaces to align with the board.
   (map (fn [row] (str (format "%2d" (Integer/parseInt row)) " "))
        (clojure.string/split-lines row-annotations)))
-
 
 (defn symbolic-board
   "Create a symbolic board. 
@@ -69,4 +76,4 @@
                                       (str row-annotation (apply str (map value-to-symbol row))))
                                     padded-row-annotations
                                     board)]
-    (str "   " column-annotations "\n" (apply str (interpose "\n" board-with-annotations)))))
+    (str "   " column-annotations "\n" (apply str (interpose "\n" board-with-annotations)) "\n   " column-annotations)))
