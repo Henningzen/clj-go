@@ -1,7 +1,7 @@
-(ns no.jansenh.clj-go.core-test
+(ns jansenh.clj-go.core-test
   (:require [clojure.test :refer [deftest is testing]]
-            [no.jansenh.clj-go.core :as sut]
-            [no.jansenh.clj-go.utilities :as utils]))
+            [jansenh.clj-go.core :as sut]
+            [jansenh.clj-go.utilities :as utils]))
 
 (deftest test-pos
   (testing "We expect to find the corresponding [x y] value on the numeric board."

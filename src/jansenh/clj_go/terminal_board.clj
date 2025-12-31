@@ -1,12 +1,12 @@
 ;; -----------------------------------------------------------------------------
-;; File: src/no/jansenh/clj_go/terminal_board.clj
+;; File: src/jansenh/clj_go/terminal_board.clj
 ;; Author: Henning Jansen - henning.jansen@jansenh.no
 ;; Copyright: (c) 2025
 ;; License: Distributed under the GNU General Public License v3.0
 ;; as described in the root of this project.
 ;; -----------------------------------------------------------------------------
 
-(ns no.jansenh.clj-go.terminal-board)
+(ns jansenh.clj-go.terminal-board)
 
 ;; -----------------------------------------------------------------------------
 ;; terminal-board

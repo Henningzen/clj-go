@@ -2,8 +2,8 @@
  :deps {org.clojure/clojure {:mvn/version "1.12.4"}
         seesaw/seesaw {:mvn/version "1.5.0"}}
  :aliases
- {:run-m {:main-opts ["-m" "no.jansenh.clj-go"]}
-  :run-x {:ns-default no.jansenh.clj-go
+ {:run-m {:main-opts ["-m" "jansenh.clj-go"]}
+  :run-x {:ns-default jansenh.clj-go
           :exec-fn clj-go
           :exec-args {}}
   :build {:deps {io.github.clojure/tools.build

@@ -91,7 +91,6 @@
      java -jar target/no.jansenh/clj-go-0.1.0-SNAPSHOT.jar
    #+END_SRC
 
-
 ** Contribute
 
 *** Commit Message Format

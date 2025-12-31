@@ -1,14 +1,14 @@
 ;; -----------------------------------------------------------------------------
-;; File: src/no/jansenh/clj_go/core.clj
+;; File: src/jansenh/clj_go/core.clj
 ;; Author: Henning Jansen - henning.jansen@jansenh.no
 ;; Copyright: (c) 2025
 ;; License: Distributed under the GNU General Public License v3.0
 ;; as described in the root of this project.
 ;; -----------------------------------------------------------------------------
 
-(ns no.jansenh.clj-go.core
+(ns jansenh.clj-go.core
   (:require [clojure.set :as set]
-            [no.jansenh.clj-go.terminal-board :as tb]))
+            [jansenh.clj-go.terminal-board :as tb]))
 
 ;; -----------------------------------------------------------------------------
 ;; clj-go.core
