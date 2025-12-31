@@ -14,7 +14,7 @@
 ;; Clojure Go Game.
 ;; authors:   Henning Jansen            henning.jansen@jansenh.no
 ;; since:     0.1.0-SNAPSHOT            2025-01-29
-;; version:   0.1.1-SNAPSHOT            2025-06-04
+;; version:   0.1.2-SNAPSHOT            2025-12-31
 ;; -----------------------------------------------------------------------------
 
 (defn clj-go

@@ -7,8 +7,7 @@
 ;; -----------------------------------------------------------------------------
 
 (ns jansenh.clj-go.core
-  (:require [clojure.set :as set]
-            [jansenh.clj-go.terminal-board :as tb]))
+  (:require [clojure.set :as set]))
 
 ;; -----------------------------------------------------------------------------
 ;; clj-go.core
@@ -17,7 +16,7 @@
 ;;
 ;; authors:   Henning Jansen            henning.jansen@jansenh.no
 ;; since:     0.1.0-SNAPSHOT            2025-01-29
-;; version:   0.1.1-SNAPSHOT            2025-06-04
+;; version:   0.1.2-SNAPSHOT            2025-12-31
 ;; -----------------------------------------------------------------------------
 
 (def board-size 19)

@@ -14,7 +14,7 @@
 ;;
 ;; authors:   Henning Jansen            henning.jansen@jansenh.no
 ;; since:     0.1.1-SNAPSHOT            2025-04-17
-;; version:   0.1.1-SNAPSHOT
+;; version:   0.1.2-SNAPSHOT            2025-12-31
 ;; -----------------------------------------------------------------------------
 
 ;; 
