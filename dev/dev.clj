@@ -22,10 +22,10 @@
 
 ;; TODO; These are valuable tests!
 (->> empty-board
-     (update-position-at-board {:x-pos 1 :y-pos 1 :value :black})
-     (value-at-position {:x-pos 1 :y-pos 1 :value :black}))
+     (update-position-at-board {:x-pos 1 :y-pos 1 :player :black})
+     (value-at-position {:x-pos 1 :y-pos 1 :player :black}))
 
-(update-position-at-board {:x-pos 1 :y-pos 1 :value :black} empty-board)
+(update-position-at-board {:x-pos 1 :y-pos 1 :player :black} empty-board)
 
 (->> empty-board (update-position-at-board {:x-pos 1 :y-pos 1 :value :black}))
 
@@ -148,12 +148,15 @@
 (comment
 
   ;; Game-play!
+  ;; - first pos is the x, row dimension, and
+  ;; - second pos is the y, column dimension.
   (do
     (println "- - - - - - - - - - - - -")
     (println
      (->> empty-board
-          (update-position-at-board (stone 0 0   :black))
-          (update-position-at-board (stone 1 1  :white))
+          (update-position-at-board (stone 0 0   :white))
+          (update-position-at-board (stone 0 18 :black))
+          ;; (update-position-at-board (stone 1 1  :white))
           ;; (update-position-at-board (stone 1 1   :black))
           ;; (update-position-at-board (stone 2 1   :black))
           ;; (update-position-at-board (stone 3 1   :black))
@@ -163,8 +166,8 @@
           ;; (update-position-at-board (stone 1 9   :white))
           ;; (update-position-at-board (stone 1 10  :white))
           ;; (update-position-at-board (stone 1 11  :white))
-          (update-position-at-board (stone 18 1  :black))
-          (update-position-at-board (stone 18 18 :black))
+          (update-position-at-board (stone 18 0  :black))
+          (update-position-at-board (stone 18 18 :white))
           (tb/symbolic-board))))
 
   ;;--->comment
