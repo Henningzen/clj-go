@@ -3,7 +3,7 @@
   (:require [clojure.tools.build.api :as b]))
 
 (def lib 'jansenh/clj-go)
-(def version "0.1.2-SNAPSHOT")
+(def version "0.1.2")
 (def main 'jansenh.clj-go)
 (def class-dir "target/classes")
 

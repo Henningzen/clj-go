@@ -8,9 +8,12 @@
   change log follows the conventions
   of [[https://keepachangelog.com/][keepchangelog.com]]
 
-** [Unreleased]
+** 0.1.2 - 2026-05-13
 *** Changed
     + Initial tests.
+    + Migrate to Eclipse Public License 2.0
+    + Migrate to proper namespace structure 'jansenh.clj-go.core'
+    + Introduce dedicated namespace 'dev/user' for REPL development.      
 
 ** 0.1.0 - 2025-03-13
 *** Added

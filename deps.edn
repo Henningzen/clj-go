@@ -1,14 +1,23 @@
 {:paths ["src" "resources"]
  :deps {org.clojure/clojure {:mvn/version "1.12.4"}
-        seesaw/seesaw {:mvn/version "1.5.0"}}
+        seesaw/seesaw {:mvn/version "1.5.0"}
+        org.clojure/tools.deps {:mvn/version "0.29.1598"}
+        org.clojure/tools.namespace {:mvn/version "1.5.1"}}
  :aliases
  {:run-m {:main-opts ["-m" "jansenh.clj-go"]}
+
   :run-x {:ns-default jansenh.clj-go
           :exec-fn clj-go
           :exec-args {}}
+
   :build {:deps {io.github.clojure/tools.build
                  {:mvn/version "0.10.11"}}
           :ns-default build}
+
+  :dev {:extra-paths ["dev"]
+        :main user
+        :repl-options {:init-ns user}}
+
   :test {:extra-paths ["test"]
          :extra-deps {org.clojure/test.check {:mvn/version "1.1.1"}
                       io.github.cognitect-labs/test-runner

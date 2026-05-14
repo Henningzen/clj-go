@@ -1,6 +1,6 @@
-(ns jansenh.clj-go.core-test
+(ns jansenh.clj-go.engine-test
   (:require [clojure.test :refer [deftest is testing]]
-            [jansenh.clj-go.core :as sut]
+            [jansenh.clj-go.engine :as sut]
             [jansenh.clj-go.utilities :as utils]))
 
 (deftest test-pos
