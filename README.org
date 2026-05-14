@@ -14,7 +14,7 @@
 
   #+BEGIN_QUOTE
 
-    You are here. Please enjoy your stay. Add your merge-request and help out?
+    You are here. Please enjoy your stay. Reach out if you want to help out?
 
   #+END_QUOTE
 
@@ -26,8 +26,7 @@
 
 
 ** Installation
-   Download from https://github.com/no.jansenh/clj-go
-
+   Download from https://github.com/Henningzen/clj-go
 
 ** Usage
    #+BEGIN_SRC shell
@@ -72,25 +71,6 @@
      clj -Tcljfmt fix
    #+END_SRC
 
-** CI pipeline
-   Build the project and build an uberjar. This will produce an updated
-   `pom.xml` file with synchronized dependencies inside the `META-INF`
-   directory inside `target/classes` and the uberjar in `target`. You can update
-   the version (and SCM tag) information in generated `pom.xml` by
-   updating `build.clj`.
-
-   If you don't want the `pom.xml` file in your project, you can remove it.
-   The `ci` task will still generate a minimal `pom.xml` as part of the
-   `uber` task, unless you remove `version` from `build.clj`.
-   #+BEGIN_SRC shell
-     clojure -T:build ci
-   #+END_SRC
-
-   Run that uberjar:
-   #+BEGIN_SRC shell
-     java -jar target/no.jansenh/clj-go-0.1.0-SNAPSHOT.jar
-   #+END_SRC
-
 ** Contribute
 
 *** Commit Message Format
@@ -110,10 +90,29 @@ Follow Conventional Commits:
 
 [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
 
+
 * Changelog
   We keep a [[file:CHANGELOG.org][changelog]]!
 
 
 * License
-Copyright © 2025 Henning Jansen
-Distributed under the [[https://www.gnu.org/licenses/gpl-3.0-standalone.html][GNU General Public License v3.0]]
+
+Copyright © 2025 - 2026 Henning Jansen
+
+This program and the accompanying materials are made available under the
+terms of the Eclipse Public License 2.0 which is available at
+[[http://www.eclipse.org/legal/epl-2.0][http://www.eclipse.org/legal/epl-2.0]]
+
+This Source Code may also be made available under the following Secondary
+Licenses when the conditions for such availability set forth in the Eclipse
+Public License, v. 2.0 are satisfied: GNU General Public License as published by
+the Free Software Foundation, either version 2 of the License, or (at your
+option) any later version, with the GNU Classpath Exception which is available
+at https://www.gnu.org/software/classpath/license.html.
+
+** Contact
+For any questions or feedback, please contact:
+
+Henning Jansen
+henning.jansen@jansenh.no
+GitHub: henningzen

@@ -1,24 +1,6 @@
-;; -----------------------------------------------------------------------------
-;; File: src/dev/dev.clj
-;; Author: Henning Jansen - henning.jansen@jansenh.no
-;; Copyright: (c) 202
-;; License: Distributed under the GNU General Public License v3.0
-;; as described in the root of this project.
-;; -----------------------------------------------------------------------------
-
 (ns dev
-  (:require [no.jansenh.clj-go.core :refer :all]
-            [no.jansenh.clj-go.terminal-board :as tb]))
-
-;; -----------------------------------------------------------------------------
-;; dev.clj
-;; -----------
-;; Development namespace. Ephemeral hosting of tests and experiments
-;;
-;; authors:   Henning Jansen            henning.jansen@jansenh.no
-;; since:     0.1.0-SNAPSHOT            2025-01-29
-;; version:   0.1.1-SNAPSHOT            2025-04-04
-;; -----------------------------------------------------------------------------
+  (:require [jansenh.clj-go.engine :refer :all]
+            [jansenh.clj-go.terminal-board :as tb]))
 
 ;; TODO; These are valuable tests!
 (->> empty-board

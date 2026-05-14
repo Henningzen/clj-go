@@ -1,10 +1,18 @@
-;; -----------------------------------------------------------------------------
-;; File: src/jansenh/clj_go/utilities.clj
-;; Author: Henning Jansen - henning.jansen@jansenh.no
-;; Copyright: (c) 2025
-;; License: Distributed under the GNU General Public License v3.0
-;; as described in the root of this project.
-;; -----------------------------------------------------------------------------
+;;; src/jansenh/clj-go/utilities.clj  ---  Go game utilities
+
+;   Copyright (c) Henning Jansen 2025 - 2026
+;   The use and distribution terms for this software are covered by the
+;   Eclipse Public License 2.0 (https://opensource.org/license/epl-2-0)
+;   which can be found in the file LICENSE at the root of this distribution.
+;   By using this software in any fashion, you are agreeing to be bound by
+;   the terms of this license. You must not remove this notice, or any other,
+;   from this software.
+;
+;; Author:  Henning Jansen - henning.jansen@jansenh.no
+;; Date:    September 2025
+;; License: Eclipse Public License 2.0 - http://www.eclipse.org/legal/epl-2.0
+;;-----------------------------------------------------------------------------
+
 (ns jansenh.clj-go.utilities)
 
 ;; ----------------------------------------------------------------------------
@@ -12,13 +20,12 @@
 ;; -------------------
 ;;
 ;;
-;; authors:   Henning Jansen            henning.jansen@jansenh.no
-;; since:     0.1.1-SNAPSHOT            2025-04-17
-;; version:   0.1.1-SNAPSHOT
+;; authors:   Henning Jansen, henning.jansen@jansenh.no
+;; since:     0.1.1-SNAPSHOT  2025-04-17
+;; version:   0.1.2-SNAPSHOT  2026-05-13
 ;; -----------------------------------------------------------------------------
 
-;; 
-;; testing vectors and positions. .
+
 (def numeric-board
   "Data structure with sequence numbers.
 
