@@ -51,7 +51,7 @@
 ;; ------------------------------------------------------------------------------
 ;;  Definitions
 
-(def board-size 19)          ; intersections define grid intersections
+(def board-size 9)          ; intersections define grid intersections
 (def cell-size 30)           ; Adjusted cell size for a 19x19 board
 (def stone-radius 13)        ; Adjusted stone radius for a 19x19 board
 (def board-margin 20)        ; Adjusted board margin for a 19x19 board

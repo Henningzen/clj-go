@@ -32,9 +32,9 @@
    The data-structure is a representation of a board with n by n vector of
    vectors, numbers increasing from one.
   "
-  (vec (for [row (range 19)]
-         (vec (for [col (range 19)]
-                (inc (+ col (* row 19))))))))
+  (vec (for [row (range 9)]
+         (vec (for [col (range 9)]
+                (inc (+ col (* row 9))))))))
 
 
 (def patterned-board
@@ -44,6 +44,6 @@
    The data-structure is a representation of a board with
    19 by 19 vector with values :black :white and :nil.
   "
-  (->> (take 361 (cycle [:black :nil :white :nil]))
-       (partition 19)
+  (->> (take 81 (cycle [:black :nil :white :nil]))
+       (partition 9)
        (mapv vec)))
