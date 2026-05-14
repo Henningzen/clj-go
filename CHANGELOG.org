@@ -1,25 +1,33 @@
-#+title:  CHANGELOG
+#+title: CHANGELOG
 #+author: Henning Jansen <henning.jansen@jansenh.no>
-#+date:   2025-01-28
+#+date: 2025-01-28
 #+STARTUP: overview
 
 * Change Log
-  All notable changes to this project will be documented in this file. This
-  change log follows the conventions
-  of [[https://keepachangelog.com/][keepchangelog.com]]
+  All notable changes to this project will be documented in this file.
+  This change log follows the conventions of [[https://keepachangelog.com/][keepchangelog.com]].
 
-** 0.1.2 - 2026-05-13
-*** Changed
-    + Initial tests.
-    + Migrate to Eclipse Public License 2.0
-    + Migrate to proper namespace structure 'jansenh.clj-go.core'
-    + Introduce dedicated namespace 'dev/user' for REPL development.      
-
-** 0.1.0 - 2025-03-13
+** [Unreleased]
 *** Added
-   + Files from the deps-new template.
-   + Initial project documentation.
-   + Board graphics implementation using Clojure Seesaw for Java.Swing.
+*** Changed
+*** Fixed: Broken changelog
+*** Removed
 
-[Unreleased]: https://github.com/no.jansenh/clj-go/compare/0.1.0...HEAD
-[0.1.0]: https://github.com/no.jansenh/clj-go/compare/0.1.0...0.1.0-SNAPSHOT
+** [0.1.2] - 2026-05-13
+*** Changed
+    - Initial tests.
+    - Migrate to Eclipse Public License 2.0.
+    - Migrate to proper namespace structure 'jansenh.clj-go.core'.
+    - Introduce dedicated namespace 'dev/user' for REPL development.
+
+** [0.1.0] - 2025-03-13
+*** Added
+    - Files from the deps-new template.
+    - Initial project documentation.
+    - Board graphics implementation using Clojure Seesaw for Java Swing.
+
+[Unreleased]: https://github.com/Henningzen/clj-go/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/Henningzen/clj-go/compare/v0.1.0...v0.1.2
+[0.1.0]: https://github.com/Henningzen/clj-go/compare/v0.1.0
+
+
