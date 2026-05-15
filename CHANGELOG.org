@@ -8,7 +8,11 @@
   This change log follows the conventions of [[https://keepachangelog.com/][keepchangelog.com]].
 
 ** [Unreleased]
-*** Added
+*** Feature: Dynamic grid size:
+             clj-go engine, board, utilities and dev namespaces now supports
+	     a configurable grid size, set in config.clj.
+	     - The grid sizes are invariants of either 9x9, 13x13 or 19x19
+	     - Tests are failing, to be fixed asap
 *** Changed
 *** Fixed: Broken changelog
 *** Removed
