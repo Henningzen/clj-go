@@ -1,4 +1,4 @@
-;;; src/jansenh/clj-go/board.clj  ---  Go game terminal board
+;;; src/jansenh/clj-go/terminal-board.clj  ---  Go game terminal board
 
 ;   Copyright (c) Henning Jansen 2025 - 2026
 ;   The use and distribution terms for this software are covered by the
@@ -11,24 +11,21 @@
 ;; Author:  Henning Jansen - henning.jansen@jansenh.no
 ;; Date:    September 2025
 ;; License: Eclipse Public License 2.0 - http://www.eclipse.org/legal/epl-2.0
-;;-----------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
 
 (ns jansenh.clj-go.terminal-board
+  ^{:author "Henning Jansen"
+    :doc    "Terminal board for REPL representation of the Go game vector."
+    :added "0.1.1"}
   (:require [jansenh.clj-go.config :as config :refer [grid-size]]))
 
-;; -----------------------------------------------------------------------------
-;; terminal-board
-;; --------------
+;;------------------------------------------------------------------------------
 ;;
-;; String based symbolic representation of a Go board state for REPL and
-;; println use.
+;; String based symbolic representation of a Go board state vector for
+;; REPL and println use.
 ;;
-;; authors:   Henning Jansen, henning.jansen@jansenh.no
-;; since:     0.1.1-SNAPSHOT  2025-04-17
-;; version:   0.1.2           2026-05-13
-;; -----------------------------------------------------------------------------
 
-(def board-size config/grid-size)
+(def board-size grid-size)
 
 (defn- value-to-symbol [value]
   ;; Convert a board value to its symbolic representation.
@@ -59,7 +56,7 @@
   ;; NOTE: We skip the letter 'I' along with common Go convention,
   ;;       hence the range for n characters span to T.
   ;;
-  (condp = board-size
+q  (condp = board-size
     9  (apply str (interpose " " (map char (seq [\A \B \C \D \E \F \G \H \J]))))
     13 (apply str (interpose " " (map char (seq [\A \B \C \D \E \F \G \H \J \K \L \M \N]))))
     19 (apply str (interpose " " (map char (seq [\A \B \C \D \E \F \G \H \J \K \L \M \N \O \P \Q \R \S \T]))))

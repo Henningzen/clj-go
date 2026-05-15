@@ -14,19 +14,14 @@
 ;;-----------------------------------------------------------------------------
 
 (ns jansenh.clj-go.engine
-  (:require [jansenh.clj-go.config :as config :refer [grid-size]]
-   [clojure.set :as set]))
+  ^{:author "Henning Jansen"
+    :doc    "clj-go.engine namespace, Go game engine representation."
+    :added "0.1.0"}
+  (:require [jansenh.clj-go.config :refer [grid-size]]
+            [clojure.set :as set]))
 
-;; -----------------------------------------------------------------------------
-;; clj-go.engine
-;; -------------
-;;
-;; authors:   Henning Jansen, henning.jansen@jansenh.no
-;; since:     0.1.0-SNAPSHOT  2025-01-29
-;; version:   0.1.2           2026-05-13
-;; -----------------------------------------------------------------------------
 
-(def board-size config/grid-size)
+(def board-size grid-size)
 
 (def empty-board
   "Default empty board, 19 by 19 in x-pos, y-pos vectors. Values are nil."

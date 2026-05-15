@@ -14,17 +14,12 @@
 ;;-----------------------------------------------------------------------------
 
 (ns jansenh.clj-go.core
+  ^{:author "Henning Jansen"
+    :doc    "clj-go.clj-go core namespace"
+    :added "0.1.0"}
   (:require [jansenh.clj-go.board :refer [create-frame]])
   (:gen-class))
 
-;; -----------------------------------------------------------------------------
-;; clj-go core namespace
-;; ---------------------
-;; Clojure Go Game.
-;; authors:   Henning Jansen, henning.jansen@jansenh.no
-;; since:     0.1.0-SNAPSHOT  2025-01-29
-;; version:   0.1.2           2026-05-13
-;; -----------------------------------------------------------------------------
 
 (defn clj-go
   "Game engine starting point."

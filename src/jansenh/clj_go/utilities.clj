@@ -14,17 +14,10 @@
 ;;-----------------------------------------------------------------------------
 
 (ns jansenh.clj-go.utilities
-  (:require [jansenh.clj-go.config :as config :refer [grid-size]]))
-
-;; ----------------------------------------------------------------------------
-;; Test data utilities
-;; -------------------
-;;
-;;
-;; authors:   Henning Jansen, henning.jansen@jansenh.no
-;; since:     0.1.1-SNAPSHOT  2025-04-17
-;; version:   0.1.3           2026-05-13
-;; -----------------------------------------------------------------------------
+  ^{:author "Henning Jansen"
+    :doc    "Go game utilities."
+    :added "0.1.1"}
+  (:require [jansenh.clj-go.config :refer [grid-size]]))
 
 
 (defn numeric-board
@@ -35,7 +28,7 @@
 
    Returns:  board vector with a running number sequence 1 - {grid-size * grid-size}"
   []
-  (let [grid-size config/grid-size]
+  (let [grid-size grid-size]
     (vec (for [row (range grid-size)]
            (vec (for [col (range grid-size)]
                   (inc (+ col (* row grid-size)))))))))
@@ -50,7 +43,7 @@
    
    Returns: board vector with evenly toggled :white and :black"
    []
-  (let [grid-size config/grid-size]
+  (let [grid-size grid-size]
     
     (->> (take (* grid-size grid-size) (cycle [:black :nil :white :nil]))
          (partition grid-size)

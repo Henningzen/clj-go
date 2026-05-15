@@ -1,4 +1,21 @@
+;;; dev.clj --- clj-go.dev namespace for exploration and development, work-in-progres
+
+;   Copyright (c) Henning Jansen 2025 - 2026
+;   The use and distribution terms for this software are covered by the
+;   Eclipse Public License 2.0 (https://opensource.org/license/epl-2-0)
+;   which can be found in the file LICENSE at the root of this distribution.
+;   By using this software in any fashion, you are agreeing to be bound by
+;   the terms of this license. You must not remove this notice, or any other,
+;   from this software.
+
+;; Author:  Henning Jansen - henning.jansen@jansenh.no
+;; Date:    September 2025
+;; License: Eclipse Public License 2.0 - http://www.eclipse.org/legal/epl-2.0
+
 (ns dev
+  ^{:author "Henning Jansen"
+    :doc    "clj-go.dev namespace for exploration and development, work-in-progres"
+    :added "0.1.2"}
   (:require [jansenh.clj-go.engine :refer :all]
             [jansenh.clj-go.terminal-board :as tb]))
 
@@ -127,9 +144,13 @@
   ;;---> comment
   )
 
-(comment
 
-  ;;;   Game-play!
+;;; ----------------------------------------------------------------------------
+;;;
+;;;   Game-play!
+;;;
+
+(comment
   ;;    - first pos is the  x, column dimension, and
   ;;    - second pos is the y, row dimension.
 
@@ -189,6 +210,32 @@
           (update-position-at-board (stone 5 4 :white))
           (update-position-at-board (stone 4 5 :white))
           (tb/symbolic-board))))
-
-  ;;--->comment
+  
+  ;;---> comment
   )
+
+
+
+(comment
+  ;; We can capture live board states from the Graphical Board
+  ;; and use in REPL, e.g. for furher exploration with terminal-board
+  ;; or create unit-tests on the data
+  
+  (def example-saved-board-state
+    [[:black nil nil nil :black nil nil nil :white]
+     [:white nil nil nil nil nil nil nil :black]
+     [:black nil nil nil nil nil nil nil :white]
+     [:white nil nil nil nil nil nil nil :black]
+     [:black nil nil nil :black nil nil nil :white]
+     [:white nil nil nil nil nil nil nil :black]
+     [:black nil nil nil nil nil nil nil :white]
+     [:white nil nil nil nil nil nil nil :black]
+     [:black nil nil nil :white nil nil nil :white]])
+  
+  (println
+   (->> example-saved-board-state
+        (tb/symbolic-board)))
+  
+  ;; ---> comment
+  )
+  

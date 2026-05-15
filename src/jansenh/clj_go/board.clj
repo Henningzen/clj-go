@@ -11,10 +11,12 @@
 ;; Author:  Henning Jansen - henning.jansen@jansenh.no
 ;; Date:    September 2025
 ;; License: Eclipse Public License 2.0 - http://www.eclipse.org/legal/epl-2.0
-;;-----------------------------------------------------------------------------
 
 (ns jansenh.clj-go.board
-  (:require [jansenh.clj-go.config :as config :refer [grid-size]]
+  ^{:author "Henning Jansen"
+    :doc    "clj-go.board namespace, Go game graphical board."
+    :added "0.1.1"}
+  (:require [jansenh.clj-go.config :refer [grid-size]]
             [seesaw.color :as color]
             [seesaw.core :as s]
             [seesaw.graphics :as g])
@@ -44,15 +46,12 @@
 ;;      - :white add stone to the board, return true/false.
 ;;      - :white pass move.
 ;;
-;; authors:   Henning Jansen, henning.jansen@jansenh.no
-;; since:     0.1.1-SNAPSHOT  2025-04-17
-;; version:   0.1.2           2026-05-13
-;;
+
 
 ;; ------------------------------------------------------------------------------
 ;;  Definitions
 
-(def board-size config/grid-size)  ; Number intersections defines board size
+(def board-size grid-size)  ; Number intersections defines board size
 (def cell-size 30)                 ; Adjusted cell size for a 19x19 board     (;TODO)
 (def stone-radius 13)              ; Adjusted stone radius for a 19x19 board  (;TODO)
 (def board-margin 20)              ; Adjusted board margin for a 19x19 board  (;TODO)
