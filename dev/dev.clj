@@ -129,27 +129,65 @@
 
 (comment
 
-  ;; Game-play!
-  ;; - first pos is the x, row dimension, and
-  ;; - second pos is the y, column dimension.
+  ;;;   Game-play!
+  ;;    - first pos is the  x, column dimension, and
+  ;;    - second pos is the y, row dimension.
+
   (do
     (println "- - - - - - - - - - - - -")
     (println
      (->> empty-board
-          (update-position-at-board (stone 0 0   :white))
-          (update-position-at-board (stone 0 18 :black))
-          ;; (update-position-at-board (stone 1 1  :white))
-          ;; (update-position-at-board (stone 1 1   :black))
-          ;; (update-position-at-board (stone 2 1   :black))
-          ;; (update-position-at-board (stone 3 1   :black))
-          ;; (update-position-at-board (stone 18 1   :black))
-          ;; (update-position-at-board (stone 18 2  :black))
-          ;; (update-position-at-board (stone 18 1  :white))
-          ;; (update-position-at-board (stone 1 9   :white))
-          ;; (update-position-at-board (stone 1 10  :white))
-          ;; (update-position-at-board (stone 1 11  :white))
-          (update-position-at-board (stone 18 0  :black))
-          (update-position-at-board (stone 18 18 :white))
+
+          ;; col 0 , 'A' from black
+          (update-position-at-board (stone 0 0   :black))
+          (update-position-at-board (stone 0 1   :black))
+          (update-position-at-board (stone 0 2   :black))
+          (update-position-at-board (stone 0 3   :black))
+          (update-position-at-board (stone 0 4   :black))
+          (update-position-at-board (stone 0 5   :black))
+          (update-position-at-board (stone 0 6   :black))
+          (update-position-at-board (stone 0 7   :black))
+          (update-position-at-board (stone 0 8   :black))
+
+          ;; col 8, 'J' from black
+          (update-position-at-board (stone 8 0   :black))
+          (update-position-at-board (stone 8 1   :black))
+          (update-position-at-board (stone 8 2   :black))
+          (update-position-at-board (stone 8 3   :black))
+          (update-position-at-board (stone 8 4   :black))
+          (update-position-at-board (stone 8 5   :black))
+          (update-position-at-board (stone 8 6   :black))
+          (update-position-at-board (stone 8 7   :black))
+          (update-position-at-board (stone 8 8   :black))
+
+          ;; row 0, '9' from Black
+          (update-position-at-board (stone 0 0   :black))
+          (update-position-at-board (stone 1 0   :white))
+          (update-position-at-board (stone 2 0   :white))
+          (update-position-at-board (stone 3 0   :white))
+          (update-position-at-board (stone 4 0   :white))
+          (update-position-at-board (stone 5 0   :white))
+          (update-position-at-board (stone 6 0   :white))
+          (update-position-at-board (stone 7 0   :white))
+          (update-position-at-board (stone 8 0   :white))
+
+          ;; row 8, '1' from black
+          (update-position-at-board (stone 0 8   :white))
+          (update-position-at-board (stone 1 8   :white))
+          (update-position-at-board (stone 2 8   :white))
+          (update-position-at-board (stone 3 8   :white))
+          (update-position-at-board (stone 4 8   :white))
+          (update-position-at-board (stone 5 8   :white))
+          (update-position-at-board (stone 6 8   :white))
+          (update-position-at-board (stone 7 8   :white))
+          (update-position-at-board (stone 8 8   :black))
+
+          ;; Perfect middle
+          (update-position-at-board (stone 4 4 :black))
+          (update-position-at-board (stone 4 3 :white))
+          (update-position-at-board (stone 3 4 :white))
+          (update-position-at-board (stone 5 4 :white))
+          (update-position-at-board (stone 4 5 :white))
           (tb/symbolic-board))))
 
   ;;--->comment

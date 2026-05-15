@@ -14,7 +14,8 @@
 ;;-----------------------------------------------------------------------------
 
 (ns jansenh.clj-go.engine
-  (:require [clojure.set :as set]))
+  (:require [jansenh.clj-go.config :as config :refer [grid-size]]
+   [clojure.set :as set]))
 
 ;; -----------------------------------------------------------------------------
 ;; clj-go.engine
@@ -25,7 +26,7 @@
 ;; version:   0.1.2           2026-05-13
 ;; -----------------------------------------------------------------------------
 
-(def board-size 19)
+(def board-size config/grid-size)
 
 (def empty-board
   "Default empty board, 19 by 19 in x-pos, y-pos vectors. Values are nil."

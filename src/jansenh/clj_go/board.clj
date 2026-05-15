@@ -14,7 +14,8 @@
 ;;-----------------------------------------------------------------------------
 
 (ns jansenh.clj-go.board
-  (:require [seesaw.color :as color]
+  (:require [jansenh.clj-go.config :as config :refer [grid-size]]
+            [seesaw.color :as color]
             [seesaw.core :as s]
             [seesaw.graphics :as g])
   (:import [java.awt Color]))
@@ -51,11 +52,12 @@
 ;; ------------------------------------------------------------------------------
 ;;  Definitions
 
-(def board-size 9)          ; intersections define grid intersections
-(def cell-size 30)           ; Adjusted cell size for a 19x19 board
-(def stone-radius 13)        ; Adjusted stone radius for a 19x19 board
-(def board-margin 20)        ; Adjusted board margin for a 19x19 board
+(def board-size config/grid-size)  ; Number intersections defines board size
+(def cell-size 30)                 ; Adjusted cell size for a 19x19 board     (;TODO)
+(def stone-radius 13)              ; Adjusted stone radius for a 19x19 board  (;TODO)
+(def board-margin 20)              ; Adjusted board margin for a 19x19 board  (;TODO)
 (def total-size (+ (* board-size cell-size) (* 2 board-margin)))
+
 
 ;; ------------------------------------------------------------------------------
 ;;  State Management
@@ -133,6 +135,7 @@
        (.validate frame)
        (.repaint frame)))))
 
+
 ;; ------------------------------------------------------------------------------
 ;;  ML Player - Automata using Machine Learning
 
@@ -151,7 +154,7 @@
                (-> state
                    (assoc-in [:board j i] :white)
                    (assoc :current-player :black))))
-      (repaint!) ; TODO: Consider if this is smelly.
+      (repaint!)                   ; TODO: Consider if this is smelly.
       true)
     false))
 
@@ -174,6 +177,7 @@
     (do
       (handle-resign))
     nil))
+
 
 ;; ------------------------------------------------------------------------------
 ;;  The UI and Its Interactions

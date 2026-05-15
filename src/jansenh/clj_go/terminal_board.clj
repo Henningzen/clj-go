@@ -13,7 +13,8 @@
 ;; License: Eclipse Public License 2.0 - http://www.eclipse.org/legal/epl-2.0
 ;;-----------------------------------------------------------------------------
 
-(ns jansenh.clj-go.terminal-board)
+(ns jansenh.clj-go.terminal-board
+  (:require [jansenh.clj-go.config :as config :refer [grid-size]]))
 
 ;; -----------------------------------------------------------------------------
 ;; terminal-board
@@ -27,7 +28,7 @@
 ;; version:   0.1.2           2026-05-13
 ;; -----------------------------------------------------------------------------
 
-(def board-size 19)
+(def board-size config/grid-size)
 
 (defn- value-to-symbol [value]
   ;; Convert a board value to its symbolic representation.
@@ -51,12 +52,21 @@
   ;; Generate column annotations (A to T for a 19x19 board).
   ;; separated by one space.
   ;;
+  ;; NOTE: The annotations skip letter 'I' according to Go game idioms.
+  ;;
+  ;; NOTE: The board accept three configuration; 9, 13 and 19 intersections.
+  ;;
   ;; NOTE: We skip the letter 'I' along with common Go convention,
-  ;;       hence the range for 19 characters span to T.
-  (apply str (interpose " " (map char (seq [\A \B \C \D \E \F \G \H \J \K \L \M \N \O \P \Q \R \S \T])))))
+  ;;       hence the range for n characters span to T.
+  ;;
+  (condp = board-size
+    9  (apply str (interpose " " (map char (seq [\A \B \C \D \E \F \G \H \J]))))
+    13 (apply str (interpose " " (map char (seq [\A \B \C \D \E \F \G \H \J \K \L \M \N]))))
+    19 (apply str (interpose " " (map char (seq [\A \B \C \D \E \F \G \H \J \K \L \M \N \O \P \Q \R \S \T]))))
+    :else nil))
 
 (defn- generate-row-annotations []
-  ;; Generate row annotations (19 to 1 for a 19x19 board).
+  ;; Generate row annotations (n to 1 for a nxn board).
   (apply str (interpose "\n" (reverse (range 1 (inc board-size))))))
 
 (defn- pad-row-annotations [row-annotations]
@@ -73,8 +83,7 @@
    Arguments: board (reference vector structure in core namespace)
 
    Returns: String, padded with row/col annotations, formatted with
-                    newline and space.
-   "
+                    newline and space."
   [board]
   (let [column-annotations (generate-column-annotations)
         row-annotations (generate-row-annotations)

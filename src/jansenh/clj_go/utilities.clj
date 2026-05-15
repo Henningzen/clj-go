@@ -13,7 +13,8 @@
 ;; License: Eclipse Public License 2.0 - http://www.eclipse.org/legal/epl-2.0
 ;;-----------------------------------------------------------------------------
 
-(ns jansenh.clj-go.utilities)
+(ns jansenh.clj-go.utilities
+  (:require [jansenh.clj-go.config :as config :refer [grid-size]]))
 
 ;; ----------------------------------------------------------------------------
 ;; Test data utilities
@@ -22,28 +23,37 @@
 ;;
 ;; authors:   Henning Jansen, henning.jansen@jansenh.no
 ;; since:     0.1.1-SNAPSHOT  2025-04-17
-;; version:   0.1.2-SNAPSHOT  2026-05-13
+;; version:   0.1.3           2026-05-13
 ;; -----------------------------------------------------------------------------
 
 
-(def numeric-board
+(defn numeric-board
   "Data structure with sequence numbers.
 
    The data-structure is a representation of a board with n by n vector of
    vectors, numbers increasing from one.
-  "
-  (vec (for [row (range 9)]
-         (vec (for [col (range 9)]
-                (inc (+ col (* row 9))))))))
+
+   Returns:  board vector with a running number sequence 1 - {grid-size * grid-size}"
+  []
+  (let [grid-size config/grid-size]
+    (vec (for [row (range grid-size)]
+           (vec (for [col (range grid-size)]
+                  (inc (+ col (* row grid-size)))))))))
 
 
-(def patterned-board
+(defn patterned-board
   "Scattered board with cycled values.
 
    Evenly distributed white, black stones with empty (nil) intersects.
    The data-structure is a representation of a board with
    19 by 19 vector with values :black :white and :nil.
-  "
-  (->> (take 81 (cycle [:black :nil :white :nil]))
-       (partition 9)
-       (mapv vec)))
+   
+   Returns: board vector with evenly toggled :white and :black"
+   []
+  (let [grid-size config/grid-size]
+    
+    (->> (take (* grid-size grid-size) (cycle [:black :nil :white :nil]))
+         (partition grid-size)
+         (mapv vec))))
+
+
