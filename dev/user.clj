@@ -13,88 +13,124 @@
 ;; License: Eclipse Public License 2.0 - http://www.eclipse.org/legal/epl-2.0
 
 (ns user
-    ^{:author "Henning Jansen"
+  ^{:author "Henning Jansen"
     :doc    "Namespace for REPL connected sessions"
     :added "0.1.2"}
   (:require
    [jansenh.clj-go.board :refer [board-state]]
    [jansenh.clj-go.core :refer [clj-go]]
-   [jansenh.clj-go.utilities :as utils]
+   [jansenh.clj-go.utilities :refer [numeric-board patterned-board]]
    [jansenh.clj-go.terminal-board :refer [symbolic-board]]
-   [clojure.repl]
    [clojure.tools.namespace.repl :refer [refresh refresh-all]]))
 
+;;; Graphics game engine, Current board state and REPL tooling
+;;  ----------------------------------------------------------
+;;
+;;  The following is a set of REPL function for starting the Graphics game
+;;  board from a REPL, capture game-state from the live Graphics game board
+;;  (if a session is active).
+;;  With the game state data map, we can invoke that state in our
+;;  'jansenh.clj-go.terminal-board' namespace and explore with stuff in
+;;  'utilities' namespace, or carry stuff over in the 'user.dev' namespace.
+;;
+;;  NOTE: See '(comment) section below for more useful tools
+;;
+;;  Happy REPL'ing!
+;;
+
+
+(defn start-game
+  "Starts the Graphics game engine in ns 'board'.
+   NOTE: A 'repl/refresh-all' is invoked, all accumulated state will be wiped!
+   Returns: Javax.Swing object.  "
+  []
+  (do
+    (refresh-all)
+    (clj-go)))
+
+
+(defn current-board-state
+  "Current board state, dereffed from atom in ns 'board.
+   '{:board [ [][] ...[] ] :current-player :black}'
+   Returns: Game-state map.  "
+  []
+  {:board (:board @board-state)
+   :current-player (:current-player @board-state)})
+
+
+(defn println-current-board-state
+  "Printline utility. Not pure function, and not very flexible; strongly tied
+   to the game state map from ns 'board.
+   Returns: nil (dirty with side-effects, our imperative shell).  "
+  [m]
+  (do
+    (println "- - - - - - - - - - - - -")
+    (println (symbolic-board (:board (m))))
+    (println (str "Player: " (name (:current-player (m)))))))
+
+;;; ----------------------------------------------------------------------------
+;;  Useful REPL in-editor tooling
+;;
+
 (comment
-  ;;; REPL namespace stuff
-  ;;  --------------------
+
+  ;; Start Graphics game engine
+  ;;
+  (refresh-all)
+  (clj-go)
+
+  ;; REPL stuff
   ;;
   (refresh)
   (refresh-all)
-  ,)
+
+  ;; Utilities stuff
+  ;;
+  (numeric-board)
+  (patterned-board)
+
+  ;; ----
+  )
 
 (comment
-  ;;; Utilities stuff
-  ;;  ---------------
-  ;;
-  (utils/numeric-board)
-  (utils/patterned-board)
-  ,)
 
+  ;;; Playful board-states
+  ;;  --------------------
+  ;;
+  ;; We de-ref the Graphics board atom in the 'current-board-state' function
+  ;; above, and here we throw that game state map onto a REPL tool function,
+  ;; 'terminal-board' for pretty-printing raw game state data.
+  ;; Being a Clojure developer is the next best thing ever, after simplu being
+  ;; alive!
+  ;;
 
-(comment
-  ;;; Start Graphics game engine
-  ;;  --------------------------
-  ;;
-  (refresh-all) ; useful for reloading states if any changes...
-  (clj-go)
-  
-  ,)
-
-(comment
-  ;;; Current board state
-  ;;  -------------------
-  ;;
-  ;;  Captured from the LIVE Graphics board, if a session is  active
-  ;;
-  
-  (def current-board-state {:board (:board @board-state)
-                            :current:player (:current-player @board-state)})
-  
   (do
     (println "- - - - - - - - - - - - -")
     (println
-     (->> (:board current-board-state)
-          symbolic-board)))
-  
-  ,)
+     (->> (:board (current-board-state))
+          symbolic-board))
+    (println (str "Current player: "
+                  (name (:current-player (current-board-state))))))
 
-
-
-
-(comment
-  ;;; Playful board-states
-  ;;  --------------------
+  ;;; Raw go board datastructure example
+  ;;  ----------------------------------
   ;;
   ;; We can capture live board states from the Graphical Board
   ;; and use in REPL, e.g. for furher exploration with terminal-board
   ;; or create unit-tests on the data
   ;;
-  
-  (def example-saved-board-state
-    [[:black nil nil nil :black nil nil nil :white]
-     [:white nil nil nil nil nil nil nil :black]
-     [:black nil nil nil nil nil nil nil :white]
-     [:white nil nil nil nil nil nil nil :black]
-     [:black nil nil nil :black nil nil nil :white]
-     [:white nil nil nil nil nil nil nil :black]
-     [:black nil nil nil nil nil nil nil :white]
-     [:white nil nil nil nil nil nil nil :black]
-     [:black nil nil nil :white nil nil nil :white]])
-  
+
   (println
-   (->> example-saved-board-state
+   (->> [[:black nil nil nil :black nil nil nil :white]
+         [:white nil nil nil nil nil nil nil :black]
+         [:black nil nil nil nil nil nil nil :white]
+         [:white nil nil nil nil nil nil nil :black]
+         [:black nil nil nil :black nil nil nil :white]
+         [:white nil nil nil nil nil nil nil :black]
+         [:black nil nil nil nil nil nil nil :white]
+         [:white nil nil nil nil nil nil nil :black]
+         [:black nil nil nil :white nil nil nil :white]]
         symbolic-board))
-  
-  ,)
 
-
+  ;; --->
+  )
