@@ -56,10 +56,15 @@
   ;; NOTE: We skip the letter 'I' along with common Go convention,
   ;;       hence the range for n characters span to T.
   ;;
-q  (condp = board-size
+  (condp = board-size
     9  (apply str (interpose " " (map char (seq [\A \B \C \D \E \F \G \H \J]))))
-    13 (apply str (interpose " " (map char (seq [\A \B \C \D \E \F \G \H \J \K \L \M \N]))))
-    19 (apply str (interpose " " (map char (seq [\A \B \C \D \E \F \G \H \J \K \L \M \N \O \P \Q \R \S \T]))))
+
+    13 (apply str (interpose " " (map char (seq [\A \B \C \D \E \F \G \H \J \K
+                                                 \L \M \N]))))
+
+    19 (apply str (interpose " " (map char (seq [\A \B \C \D \E \F \G \H \J \K
+                                                 \L \M \N \O \P \Q \R \S \T]))))
+
     :else nil))
 
 (defn- generate-row-annotations []
@@ -72,11 +77,11 @@ q  (condp = board-size
        (clojure.string/split-lines row-annotations)))
 
 (defn symbolic-board
-  "Create a symbolic board. 
+  "Create a symbolic board.
 
-   The board has row and column annotations. The string is intended 
+   The board has row and column annotations. The string is intended
    for visualization in REPL or text file.
-   
+
    Arguments: board (reference vector structure in core namespace)
 
    Returns: String, padded with row/col annotations, formatted with
