@@ -21,20 +21,11 @@
             [clojure.set :as set]))
 
 
-(def board-size grid-size)
-
-(def empty-board
-  "Default empty board, 19 by 19 in x-pos, y-pos vectors. Values are nil."
-  (vec (for [row (range board-size)]
-         (vec (for [col (range board-size)]
+(def ^:private empty-board
+  "Default empty board, n by n in x-pos, y-pos vectors. Values are nil."
+  (vec (for [row (range grid-size)]
+         (vec (for [col (range grid-size)]
                 nil)))))
-
-(defn stone
-  "A stone has a position and a value, the color."
-  [x-pos y-pos player]
-  {:player player
-   :x-pos x-pos
-   :y-pos y-pos})
 
 (defn position->
   "Helper function for transforming position vector or map.
@@ -175,6 +166,6 @@
   (let [player (:player gs)
         stones (:stones gs)]
     (reduce (fn [board [x y]]
-              (update-position-at-board (stone x y player) board))
+              (update-position-at-board {:player player :x-pos x :y-pos y} board))
             b
             stones)))

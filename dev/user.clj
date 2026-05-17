@@ -19,7 +19,8 @@
   (:require
    [jansenh.clj-go.board :refer [board-state]]
    [jansenh.clj-go.core :refer [clj-go]]
-   [jansenh.clj-go.utilities :refer [numeric-board patterned-board]]
+   [jansenh.clj-go.engine :refer [update-position-at-board]]
+   [jansenh.clj-go.utilities :refer [empty-board-vector numeric-board patterned-board stone]]
    [jansenh.clj-go.terminal-board :refer [symbolic-board]]
    [clojure.tools.namespace.repl :refer [refresh refresh-all]]))
 
@@ -58,7 +59,7 @@
    :current-player (:current-player @board-state)})
 
 
-(defn println-current-board-state
+(defn println-current-board-state->
   "Printline utility. Not pure function, and not very flexible; strongly tied
    to the game state map from ns 'board.
    Returns: nil (dirty with side-effects, our imperative shell).  "
@@ -67,6 +68,24 @@
     (println "- - - - - - - - - - - - -")
     (println (symbolic-board (:board (m))))
     (println (str "Player: " (name (:current-player (m)))))))
+
+(defn println-point->terminal-board
+  "Set any point(s)
+
+   Provided a point map '{:player :black, :x-pos 0, :y-pos 0}' (use the
+   'jansenh.clj-go.engine/stone' function for convenience), and a board map, 
+   this function will println a terminal-board.
+
+   Returns: nil (side-effect 'println'. "
+  [stone board]
+  (do
+    (println " - - - - - - - - - - - - -")
+    (println
+     (->> board
+          (update-position-at-board stone)
+          (symbolic-board)))))
+
+
 
 ;;; ----------------------------------------------------------------------------
 ;;  Useful REPL in-editor tooling

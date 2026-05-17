@@ -16,8 +16,12 @@
   ^{:author "Henning Jansen"
     :doc    "clj-go.dev namespace for exploration and development, work-in-progres"
     :added "0.1.2"}
-  (:require [jansenh.clj-go.engine :refer :all]
-            [jansenh.clj-go.terminal-board :as tb]))
+  (:require [user :refer [println-point->terminal-board println-point->terminal-board]]
+            [jansenh.clj-go.engine :refer :all]
+            [jansenh.clj-go.terminal-board :refer [symbolic-board]]
+            [jansenh.clj-go.utilities :refer [stone  empty-board-vector]]))
+
+
 
 ;; TODO; These are valuable tests!
 (->> empty-board
@@ -28,7 +32,15 @@
 
 (->> empty-board (update-position-at-board {:x-pos 1 :y-pos 1 :value :black}))
 
-(comment ;; Go string
+(comment
+  (println-point->terminal-board {:player :black :x-pos 18 :y-pos 18} (empty-board-vector 19))
+  ;; --->
+  )
+
+(comment
+  ;; ---------------------------------------------------------------------------
+  ;; Go string
+  ;;
 
   ;; We now got an arity for calling an empty go-string,
   (def empty-go-string (go-string))
@@ -53,7 +65,10 @@
 
   )
 
-(comment ;; Testing updates to  Go strings
+(comment
+  ;; ---------------------------------------------------------------------------
+  ;; Testing updates to  Go strings
+  ;;
 
   (def first-string {:player :black :stones #{[1 1]} :liberties #{[2 2] [2 3]}})
   (def second-string {:player :white :stones #{[5 5]} :liberties #{[2 2] [2 3]}})
@@ -90,7 +105,10 @@
 
 
 (comment
+  ;; ---------------------------------------------------------------------------
   ;; Let's apply a go-string or two on a board.
+  ;;
+
   (def initial-white-string (go-string {:player :white :stones #{[0 1] [0 2]} :liberties #{[2 2] [2 3]}}))
   (def initial-black-string (go-string {:player :black :stones #{[1 1] [1 2]} :liberties #{[2 2] [2 3]}}))
 
@@ -118,11 +136,14 @@
   ;;--->
   )
 
-(comment ;; Testing remove-liberity
+(comment
+  ;; ---------------------------------------------------------------------------
+  ;; Testing remove-liberity
+  ;;
 
   (def initial-go-string (go-string {:player :black
-                                 :stones #{[1 1] [1 2]}
-                                 :liberties #{[2 2] [2 3]}}))
+                                     :stones #{[1 1] [1 2]}
+                                     :liberties #{[2 2] [2 3]}}))
 
   (-> initial-go-string
       :liberties
@@ -145,82 +166,82 @@
   )
 
 
-;;; ----------------------------------------------------------------------------
-;;;
-;;;   Game-play!
-;;;
-
 (comment
+  ;; ---------------------------------------------------------------------------
+  ;; Game board vector and map
+  ;;
   ;;    - first pos is the  x, column dimension, and
   ;;    - second pos is the y, row dimension.
+  ;;
 
   (do
     (println "- - - - - - - - - - - - -")
     (println
      (->> empty-board
 
-          ;; col 0 , 'A' from black
-          (update-position-at-board (stone 0 0   :black))
-          (update-position-at-board (stone 0 1   :black))
-          (update-position-at-board (stone 0 2   :black))
-          (update-position-at-board (stone 0 3   :black))
-          (update-position-at-board (stone 0 4   :black))
-          (update-position-at-board (stone 0 5   :black))
-          (update-position-at-board (stone 0 6   :black))
-          (update-position-at-board (stone 0 7   :black))
-          (update-position-at-board (stone 0 8   :black))
+          ;; Column 0 , 'A' from black
+          (update-position-at-board (stone :black 0 0)) ;; Upper left corner
+          (update-position-at-board (stone :black 0 1))
+          (update-position-at-board (stone :black 0 2))
+          (update-position-at-board (stone :black 0 3))
+          (update-position-at-board (stone :black 0 4))
+          (update-position-at-board (stone :black 0 5))
+          (update-position-at-board (stone :black 0 6))
+          (update-position-at-board (stone :black 0 7))
+          (update-position-at-board (stone :black 0 8)) ;; Lower left corner
 
-          ;; col 8, 'J' from black
-          (update-position-at-board (stone 8 0   :black))
-          (update-position-at-board (stone 8 1   :black))
-          (update-position-at-board (stone 8 2   :black))
-          (update-position-at-board (stone 8 3   :black))
-          (update-position-at-board (stone 8 4   :black))
-          (update-position-at-board (stone 8 5   :black))
-          (update-position-at-board (stone 8 6   :black))
-          (update-position-at-board (stone 8 7   :black))
-          (update-position-at-board (stone 8 8   :black))
+          ;; Column 8, 'J' from black
+          (update-position-at-board (stone :white 8 0)) ;; Upper right corner
+          (update-position-at-board (stone :black 8 1))
+          (update-position-at-board (stone :black 8 2))
+          (update-position-at-board (stone :black 8 3))
+          (update-position-at-board (stone :black 8 4))
+          (update-position-at-board (stone :black 8 5))
+          (update-position-at-board (stone :black 8 6))
+          (update-position-at-board (stone :black 8 7))
+          (update-position-at-board (stone :black 8 8)) ;; Lower right corner
 
-          ;; row 0, '9' from Black
-          (update-position-at-board (stone 0 0   :black))
-          (update-position-at-board (stone 1 0   :white))
-          (update-position-at-board (stone 2 0   :white))
-          (update-position-at-board (stone 3 0   :white))
-          (update-position-at-board (stone 4 0   :white))
-          (update-position-at-board (stone 5 0   :white))
-          (update-position-at-board (stone 6 0   :white))
-          (update-position-at-board (stone 7 0   :white))
-          (update-position-at-board (stone 8 0   :white))
+          ;; Row 0, '9' from Black
+          (update-position-at-board (stone :black 0 0)) ;; Upper left corner
+          (update-position-at-board (stone :white 1 0))
+          (update-position-at-board (stone :white 2 0))
+          (update-position-at-board (stone :white 3 0))
+          (update-position-at-board (stone :white 4 0))
+          (update-position-at-board (stone :white 5 0))
+          (update-position-at-board (stone :white 6 0))
+          (update-position-at-board (stone :white 7 0))
+          (update-position-at-board (stone :white 8 0)) ;; Upper right corner
 
-          ;; row 8, '1' from black
-          (update-position-at-board (stone 0 8   :white))
-          (update-position-at-board (stone 1 8   :white))
-          (update-position-at-board (stone 2 8   :white))
-          (update-position-at-board (stone 3 8   :white))
-          (update-position-at-board (stone 4 8   :white))
-          (update-position-at-board (stone 5 8   :white))
-          (update-position-at-board (stone 6 8   :white))
-          (update-position-at-board (stone 7 8   :white))
-          (update-position-at-board (stone 8 8   :black))
+          ;; Row 8, '1' from black
+          (update-position-at-board (stone :white 0 8)) ;; Lower left corner
+          (update-position-at-board (stone :white 1 8))
+          (update-position-at-board (stone :white 2 8))
+          (update-position-at-board (stone :white 3 8))
+          (update-position-at-board (stone :white 4 8))
+          (update-position-at-board (stone :white 5 8))
+          (update-position-at-board (stone :white 6 8))
+          (update-position-at-board (stone :white 7 8))
+          (update-position-at-board (stone :black 8 8)) ;; Lower right corner
 
           ;; Perfect middle
-          (update-position-at-board (stone 4 4 :black))
-          (update-position-at-board (stone 4 3 :white))
-          (update-position-at-board (stone 3 4 :white))
-          (update-position-at-board (stone 5 4 :white))
-          (update-position-at-board (stone 4 5 :white))
+          (update-position-at-board (stone :black 4 4)) ;; perfect middle (9x9)
+          (update-position-at-board (stone :white 4 3))
+          (update-position-at-board (stone :white 3 4))
+          (update-position-at-board (stone :white 5 4))
+          (update-position-at-board (stone :white 4 5))
           (tb/symbolic-board))))
-  
+
   ;;---> comment
   )
 
 
 
 (comment
+  ;; ---------------------------------------------------------------------------
   ;; We can capture live board states from the Graphical Board
   ;; and use in REPL, e.g. for furher exploration with terminal-board
   ;; or create unit-tests on the data
-  
+
   (def example-saved-board-state
     [[:black nil nil nil :black nil nil nil :white]
      [:white nil nil nil nil nil nil nil :black]
@@ -231,11 +252,10 @@
      [:black nil nil nil nil nil nil nil :white]
      [:white nil nil nil nil nil nil nil :black]
      [:black nil nil nil :white nil nil nil :white]])
-  
+
   (println
    (->> example-saved-board-state
         (tb/symbolic-board)))
-  
+
   ;; ---> comment
   )
-  

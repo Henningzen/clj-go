@@ -14,18 +14,15 @@
 ;;------------------------------------------------------------------------------
 
 (ns jansenh.clj-go.terminal-board
-  ^{:author "Henning Jansen"
+  {:author "Henning Jansen"
     :doc    "Terminal board for REPL representation of the Go game vector."
-    :added "0.1.1"}
-  (:require [jansenh.clj-go.config :as config :refer [grid-size]]))
+    :added "0.1.1"})
 
 ;;------------------------------------------------------------------------------
 ;;
 ;; String based symbolic representation of a Go board state vector for
 ;; REPL and println use.
 ;;
-
-(def board-size grid-size)
 
 (defn- value-to-symbol [value]
   ;; Convert a board value to its symbolic representation.
@@ -45,7 +42,7 @@
   ;; separated by one space.
   (apply str (interpose " " (map char (range (int \A) (+ (int \A) board-size))))))
 
-(defn- generate-column-annotations []
+(defn- generate-column-annotations [board-size]
   ;; Generate column annotations (A to T for a 19x19 board).
   ;; separated by one space.
   ;;
@@ -67,7 +64,7 @@
 
     :else nil))
 
-(defn- generate-row-annotations []
+(defn- generate-row-annotations [board-size]
   ;; Generate row annotations (n to 1 for a nxn board).
   (apply str (interpose "\n" (reverse (range 1 (inc board-size))))))
 
@@ -87,11 +84,13 @@
    Returns: String, padded with row/col annotations, formatted with
                     newline and space."
   [board]
-  (let [column-annotations (generate-column-annotations)
-        row-annotations (generate-row-annotations)
+  (let [board-size (count board)
+        column-annotations (generate-column-annotations board-size)
+        row-annotations (generate-row-annotations board-size)
         padded-row-annotations (pad-row-annotations row-annotations)
         board-with-annotations (map (fn [row-annotation row]
                                       (str row-annotation (apply str (map value-to-symbol row))))
                                     padded-row-annotations
                                     board)]
-    (str "   " column-annotations "\n" (apply str (interpose "\n" board-with-annotations)) "\n   " column-annotations)))
+    (str "   " column-annotations "\n" (apply str (interpose "\n" board-with-annotations))
+         "\n   " column-annotations)))
