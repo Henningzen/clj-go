@@ -78,8 +78,9 @@
   "Convert pixel coordinates to the nearest board intersection"
   [x y]
   (let [i (Math/round (float (/ (- x board-margin) cell-size)))
-        j (Math/round (float (/ (- y board-margin) cell-size)))]
-    (when (and (<= 0 i (dec board-size)) (<= 0 j (dec board-size)))
+        j (Math/round (float (/ (- y board-margin) cell-size)))
+        board-size (dec board-size)]
+    (when (and (<= 0 i board-size) (<= 0 j board-size))
       [i j])))
 
 (defn place-stone
