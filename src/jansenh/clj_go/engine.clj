@@ -17,15 +17,8 @@
   ^{:author "Henning Jansen"
     :doc    "clj-go.engine namespace, Go game engine representation."
     :added "0.1.0"}
-  (:require [jansenh.clj-go.config :refer [grid-size]]
-            [clojure.set :as set]))
+  (:require [clojure.set :as set]))
 
-
-(def ^:private empty-board
-  "Default empty board, n by n in x-pos, y-pos vectors. Values are nil."
-  (vec (for [row (range grid-size)]
-         (vec (for [col (range grid-size)]
-                nil)))))
 
 (defn position->
   "Helper function for transforming position vector or map.
@@ -92,7 +85,9 @@
    NOTE: The function supports merging only one string (for now).
 
    NOTE: Operations on 'let with (set...) and (conj- ...) use default values
-         as fallback for consistency."
+         as fallback for consistency.
+
+   Returns: Map representing a go-string. "
   ([]
    {:player nil :stones #{} :liberties #{}})
   ([m & rst]
@@ -139,13 +134,13 @@
 
 (defn remove-liberty
   "Remove libery from go-string..
-   The liberty has format [x-pos y-pos]."
+   The liberty has format [x-pos y-pos]. "
   ([go-string lib]
    (update go-string :liberties disj lib)))
 
 (defn add-liberty
   "Add libery to go-string.
-   The liberty has format [x-pos y-pos]."
+   The liberty has format [x-pos y-pos]. "
   ([go-string lib]
    (update go-string :liberties conj lib))
   #_([board & libs]                      ;; TODO Adapt to collection of lib's
@@ -159,13 +154,12 @@
            the let binding as x and y.
 
    Arguments:
-     - gs is a go-string
-     - b is a board vector (empty-board is the reference format).
-  "
-  [gs b]
-  (let [player (:player gs)
-        stones (:stones gs)]
+     - m is a go-string Map
+     - b is a board Vector. "
+  [m v]
+  (let [player (:player m)
+        stones (:stones m)]
     (reduce (fn [board [x y]]
               (update-position-at-board {:player player :x-pos x :y-pos y} board))
-            b
+            v
             stones)))
