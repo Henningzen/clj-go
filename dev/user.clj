@@ -15,14 +15,39 @@
 (ns user
   ^{:author "Henning Jansen"
     :doc    "Namespace for REPL connected sessions"
-    :added "0.1.2"}
+    :added "0.1.3"}
   (:require
    [jansenh.clj-go.board :refer [board-state]]
    [jansenh.clj-go.core :refer [clj-go]]
    [jansenh.clj-go.engine :refer [update-position-at-board]]
-   [jansenh.clj-go.utilities :refer [empty-board-vector numeric-board patterned-board stone]]
+   [jansenh.clj-go.utilities :refer [numeric-board patterned-board]]
    [jansenh.clj-go.terminal-board :refer [symbolic-board]]
+   [clojure.pprint :refer [pprint]]
+   [clojure.repl :refer [dir-fn]]
    [clojure.tools.namespace.repl :refer [refresh refresh-all]]))
+
+;;; We got magic tooling!
+;;  ---------------------
+;;  The repl and tools namespaces are our best allied
+;;
+
+(defn explore-namespace
+  "Demonstrates the use or the 'clojure.repl' namespace
+   Takes on namespace argument. The repl function 'dir-fn' returns a sorted
+   seq of all symbols in the namespace.
+
+   NOTE: ('dir-fn' has an equivalent 'dir'
+   printing a sorted directory of a given namespace.)
+
+   Returns: nil (side-effect system out)."
+  [ns]
+  (->> ns
+       dir-fn
+       pprint))
+
+(comment
+  (explore-namespace 'jansenh.clj-go.board)
+  ,)
 
 ;;; Graphics game engine, Current board state and REPL tooling
 ;;  ----------------------------------------------------------
@@ -39,20 +64,16 @@
 ;;  Happy REPL'ing!
 ;;
 
-
 (defn start-game
   "Starts the Graphics game engine in ns 'board'.
-   NOTE: A 'repl/refresh-all' is invoked, all accumulated state will be wiped!
-   Returns: Javax.Swing object.  "
+   TODO: Add a 'stop-game' function asap, and compound a 'restart-game'
+   Returns: Javax.Swing object (active Graphics board, internal game state).  "
   []
-  (do
-    (refresh-all)
-    (clj-go)))
+  (clj-go))
 
 
 (defn current-board-state
   "Current board state, dereffed from atom in ns 'board.
-   '{:board [ [][] ...[] ] :current-player :black}'
    Returns: Game-state map.  "
   []
   {:board (:board @board-state)
@@ -60,31 +81,25 @@
 
 
 (defn println-current-board-state->
-  "Printline utility. Not pure function, and not very flexible; strongly tied
-   to the game state map from ns 'board.
+  "Printline utility for current board state.
+   Note:    Not pure function, and not very flexible; strongly tied
+            to the game state map from ns 'board.
    Returns: nil (dirty with side-effects, our imperative shell).  "
   [m]
-  (do
-    (println "- - - - - - - - - - - - -")
-    (println (symbolic-board (:board (m))))
-    (println (str "Player: " (name (:current-player (m)))))))
+  (println "\n" (symbolic-board (:board (m)))
+             (str "\nPlayer: " (name (:current-player (m))) "\n")))
+
 
 (defn println-point->terminal-board
-  "Set any point(s)
-
-   Provided a point map '{:player :black, :x-pos 0, :y-pos 0}' (use the
-   'jansenh.clj-go.engine/stone' function for convenience), and a board map, 
-   this function will println a terminal-board.
-
+  "Set any point(s).
+   Provided a point map '{:player :black, :x-pos 0, :y-pos 0}' and
+   a board map, this function will println a terminal-board.
    Returns: nil (side-effect 'println'. "
   [stone board]
-  (do
-    (println " - - - - - - - - - - - - -")
-    (println
-     (->> board
-          (update-position-at-board stone)
-          (symbolic-board)))))
-
+  (->> board
+       (update-position-at-board stone)
+       (symbolic-board)
+       (println)))
 
 
 ;;; ----------------------------------------------------------------------------
@@ -105,8 +120,8 @@
 
   ;; Utilities stuff
   ;;
-  (numeric-board)
-  (patterned-board)
+  (numeric-board 19)
+  (patterned-board 19)
 
   ;; ----
   )
