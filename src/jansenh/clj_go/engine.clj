@@ -30,6 +30,16 @@
    {:x-pos x
     :y-pos y}))
 
+(defn position->new
+  "Helper function for transforming position vector or map.
+   1. Create a vector [x y] from a map with {:x-pos x, :y-pos y}, {:x-pos 1, :y-pos 1} -> [0 0]
+   2. Creates a {:x-pos x, :y-pos y} map from [x y] values, , [0 0] -> {:x-pos 1, :y-pos 1}"
+  ([m]
+   [(:x-pos m) (:y-pos m)])
+  ([x y]
+   {:x-pos x
+    :y-pos y}))
+
 (defn update-position-at-board
   "Updates the board at the specified x and y position with the given value.
    The value is a player :black or :white or nil.

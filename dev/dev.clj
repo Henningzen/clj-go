@@ -24,13 +24,13 @@
 
 
 ;; TODO; These are valuable tests!
-(->> empty-board
+(->> (empty-board-vector 19)
      (update-position-at-board {:x-pos 1 :y-pos 1 :player :black})
      (value-at-position {:x-pos 1 :y-pos 1 :player :black}))
 
-(update-position-at-board {:x-pos 1 :y-pos 1 :player :black} empty-board)
+(update-position-at-board {:x-pos 1 :y-pos 1 :player :black} (empty-board-vector 19))
 
-(->> empty-board (update-position-at-board {:x-pos 1 :y-pos 1 :value :black}))
+(->> empty-board-vector (update-position-at-board {:x-pos 1 :y-pos 1 :value :black}))
 
 (comment
   (println-point->terminal-board {:player :black :x-pos 18 :y-pos 18} (empty-board-vector 19))
